@@ -6,7 +6,7 @@ on:
       - master
     paths:
       - 'src/**'
-      - '.github/workflows/main.yaml'
+      - '.github/workflows/main.yml'
 
 jobs:
   build-docs:
