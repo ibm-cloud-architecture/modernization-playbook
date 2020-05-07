@@ -6,7 +6,7 @@ on:
       - master
     paths:
       - 'src/**'
-      - '.github/workflows/build-and-push-gatsby.yaml'
+      - '.github/workflows/main.yaml'
 
 jobs:
   build-docs:
