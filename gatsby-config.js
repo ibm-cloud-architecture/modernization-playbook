@@ -11,7 +11,7 @@ module.exports = {
       options: {
         name: 'Carbon Design Gatsby Theme',
         short_name: 'Gatsby Theme Carbon',
-        start_url: '/',
+        start_url: '/moderization-playbook',
         background_color: '#ffffff',
         theme_color: '#0062ff',
         display: 'browser',
@@ -23,7 +23,6 @@ module.exports = {
         repository: {
           baseUrl:
             'https://github.com/ibm-cloud-architecture/modernization-playbook',
-          subDirectory: 'src',
         },
 	titleType: 'append'
       },

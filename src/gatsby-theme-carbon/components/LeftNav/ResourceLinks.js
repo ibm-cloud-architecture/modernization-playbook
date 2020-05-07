@@ -4,11 +4,11 @@ import ResourceLinks from 'gatsby-theme-carbon/src/components/LeftNav/ResourceLi
 const links = [
   {
     title: 'Github',
-    href: 'https://github.com/carbon-design-system/gatsby-theme-carbon',
+    href: 'https://github.com/ibm-cloud-architecture/modernization-playbook',
   },
   {
     title: 'Architecture Center',
-    href: 'https://www.ibm.com/cloud/architecture/architectures/application-modernization/',
+    href: 'https://www.ibm.com/cloud/architecture/architectures/',
   },
 ];
 

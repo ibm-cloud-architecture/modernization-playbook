@@ -8,7 +8,9 @@
     "dev:clean": "yarn clean && yarn dev",
     "build": "gatsby build",
     "build:clean": "yarn clean && gatsby build",
+    "build:prefix": "gatsby build --prefix-paths",
     "serve": "gatsby serve",
+    "serve:prefix": "gatsby serve --prefix-paths",
     "clean": "gatsby clean",
     "build:analyze": "ANALYZE=true yarn build"
   },
