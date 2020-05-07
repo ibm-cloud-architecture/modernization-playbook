@@ -29,4 +29,4 @@ jobs:
       with:
         ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH: gh-pages
-        FOLDER: ${{ env.WORKDIR }}/public
+        FOLDER: public
