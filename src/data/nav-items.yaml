@@ -47,6 +47,10 @@
       path: /applications/was90/tWAS-build-WCMT4IC
     - title: Deploy
       path: /applications/was90/tWAS-deploy
+- title: Integration
+  pages:
+    - title: Introduction
+      path: /integration/
 - title: Day 2 Operations
   pages:
     - title: Install Prometheus

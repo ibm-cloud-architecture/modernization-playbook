@@ -2,7 +2,7 @@ module.exports = {
   siteMetadata: {
     title: 'Modernization Playbook',
     description: 'Technical approaches to modernizing your existing enterprise applications for the cloud',
-    keywords: 'gatsby,theme,carbon',
+    keywords: 'cloud, modernization, application, integration',
   },
   pathPrefix: `/modernization-playbook`,
   plugins: [
@@ -22,8 +22,8 @@ module.exports = {
       options: {
         repository: {
           baseUrl:
-            'https://github.com/carbon-design-system/gatsby-theme-carbon',
-          subDirectory: '/packages/example',
+            'https://github.com/ibm-cloud-architecture/modernization-playbook',
+          subDirectory: 'src',
         },
 	titleType: 'append'
       },

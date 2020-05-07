@@ -1,63 +1,57 @@
 ---
-title: Applications
-description: Modernization topics related to applications will go here
+title:  Modern Integration
+description:  Assets for integration modernization
 ---
 
-<PageDescription>
+### Code
 
-This project is a [Gatsby theme](https://www.gatsbyjs.org/docs/themes/what-are-gatsby-themes/) that empowers developers, writers, and designers to create fast, accessible sites that look and feel like Carbon. Follow along to start creating your own site.
+- [Modern Integration the IBM Garage Perspective](https://www.ibm.com/cloud/garage/architectures/modern-integration)
+- [Event Driven Architecture - eBook](https://ibm-cloud-architecture.github.io/refarch-eda/)
+- [Storing Encrypted Secuirty Credentials in a Vault using ACE v11.0.0.6](https://developer.ibm.com/integration/blog/2019/10/15/storing-encrypted-security-credentials-in-a-vault-using-app-connect-enterprise-v11-0-0-6/)
+- [IBM ACE on GitHub](https://github.com/ot4i/ace-docker)
+- [MQ Advanced for Developers on Docker](https://hub.docker.com/r/ibmcom/mq/)
+- [Building an MQ Container](https://github.com/ibm-messaging/mq-container/blob/master/docs/building.md#building-a-production-image)
+- [Providing MQ Stats to Prometheus](https://github.com/ibm-messaging/mq-container/blob/master/docs/internals.md#prometheus-metrics)
+- [APIC Connect Content for the Inventory API definition and management](https://github.com/ibm-cloud-architecture/refarch-integration-api)
 
-</PageDescription>
+### How-To Guides
 
-## First steps
+- [Creating a message Flow in ACE](https://developer.ibm.com/integration/docs/app-connect-enterprise/videos-for-ibm-app-connect-enterprise/#)
+- [Getting Started with ACE](https://developer.ibm.com/integration/docs/app-connect-enterprise/videos-for-ibm-app-connect-enterprise/#)
+- [How to Use Policies in ACE](https://developer.ibm.com/integration/docs/app-connect-enterprise/videos-for-ibm-app-connect-enterprise/#)
+- [ACE Admin Security - UserID / Password](https://developer.ibm.com/integration/docs/app-connect-enterprise/videos-for-ibm-app-connect-enterprise/#)
+- [ACE Admin Security - HTTPS](https://developer.ibm.com/integration/docs/app-connect-enterprise/videos-for-ibm-app-connect-enterprise/#)
+- [Aspera Developer Community](https://developer.ibm.com/aspera/)
 
-1. **Create your site** – use the gatsby CLI to bootstrap your site with the starter
+### Reference architectures
 
-   ```sh
-   npx gatsby new my-carbon-site https://github.com/carbon-design-system/gatsby-starter-carbon-theme
-   ```
+- [Modern Integration Reference Architecture](https://www.ibm.com/cloud/garage/architectures/modern-integration/reference-architecture)
+- [Digital Transformation Through APIs](https://www.ibm.com/cloud/garage/architectures/apiArchitecture)
+- [API Reference Architecture](https://www.ibm.com/cloud/garage/architectures/apiArchitecture/reference-architecture)
+- [IBM Cloud Pak for Integration](https://www.ibm.com/cloud/cloud-pak-for-integration)
+- [IBM Cloud Pak for Integration: Runtime](https://www.ibm.com/cloud/garage/architectures/cloud-pak-for-integration-runtime-solution)
 
-2. **Start developing** – navigate into your directory with `cd my-carbon-site`.
+### Tutorials
 
-   Start it up using one of the following snippets. You can tell which command to use based on the lock file at the root of your project (`yarn.lock` for yarn and `package-lock.json` for npm). For yarn, type `yarn dev` for npm, you’ll use `npm run dev`.
+- [Agile Integration Architecture - eBook](https://www.ibm.com/downloads/cas/J7E0VLDY)
+- [IBM Cloud Pak for Integration Playbook](https://pages.github.ibm.com/CASE/cloudpak-onboard-residency/integration/introduction/)
+- [Build LoopBack API with APIC & Node.js](https://www.ibm.com/developerworks/library/wa-get-started-with-loopback-neward-1/index.html?cm_sp=developer-_-apic-dev-center-_-view-guide)
+- [Unlock Enterprise Data Using APIs](https://developer.ibm.com/patterns/unlock-enterprise-data-using-apis/?cm_sp=developer-_-apic-dev-center-_-journey-landing-page)
+- [DataPower Tutorials](https://github.com/ibm-datapower/datapower-tutorials)
+- [App Connect Tutorials](https://developer.ibm.com/integration/docs/app-connect/tutorials-for-ibm-app-connect/)
+- [MQ Tutorials from IBM Developer](https://developer.ibm.com/messaging/learn-mq/mq-tutorials/)
+- [Automate API lifecycle management by using a DevOps platform](https://www.ibm.com/cloud/garage/tutorials/manage-api-lifecycle)
+- [Tutorial - MQ on IBM Cloud](https://www.ibm.com/cloud/garage/tutorials/ibm-mq-on-cloud/tutorial-mq-on-ibm-cloud)
 
-3. **Make some changes!** – open [localhost:8000](//localhost:8000) in your browser to see your site running.
+### Webinars
 
-   Each of the Items in your side bar correlates to a MDX file in your `src/pages/` directory. Navigate to a site and try editing the corresponding markdown file. You’ll be able to see it update live!
-
-## 🔍 What’s in here?
-
-Lets check out the structure of our project
-
-    .
-    ├── LICENSE
-    ├── README.md
-    ├── gatsby-config.js
-    ├── node_modules
-    ├── package.json
-    ├── public
-    ├── src
-    │   ├── data
-    │   ├── gatsby-theme-carbon
-    │   ├── images
-    │   └── pages
-    └── yarn.lock
-
-1.  **`/node_modules`**: This directory contains all of the modules of code that your project depends on (npm packages) are automatically installed.
-
-1.  **`/src`**: This directory will contain all of the code related to what you will see on the front-end of your site.
-
-    - **data** this is where you’ll update your sidebar order and contents
-    - **images** you can colocate your images here or store them next to your pages, whichver you chose
-    - **gatsby-theme-carbon** this is where you’ll override (known as shadowing) the default `gatsby-theme-carbon` components
-    - **pages** This is where most of your content will live. You’ll represent each page with an MDX file.
-
-1.  **`.gitignore`**: This file tells git which files it should not track / not maintain a version history for.
-
-1.  **`gatsby-config.js`**: This is the main configuration file for a Gatsby site. This is where you can specify information about your site (metadata) like the site title and description. You’ll notice that all of the configuration for the site is coming from `gatsby-theme-carbon`
-
-1.  **`LICENSE`**: Gatsby is licensed under the Apache 2.0 license.
-
-1.  **`yarn.lock`** (See `package.json` below, first). This is an automatically generated file based on the exact versions of your npm dependencies that were installed for your project. **(You won’t change this file directly).**
-
-1.  **`package.json`**: A manifest file for Node.js projects, which includes things like metadata (the project’s name, author, etc). This manifest is how npm knows which packages to install for your project.
+- [Realizing the Economic Value of APIs](https://www.ibm.com/cloud/garage/videos/efficient-api-deployment-with-devops-governance)
+- [ACE - IBM App Connect at IBM](https://www.ibm.com/cloud/app-connect)
+- [API Connect at IBM](https://www.ibm.com/cloud/api-connect)
+- [DataPower Gateways at IBM](https://www.ibm.com/products/datapower-gateway)
+- [MQ at IBM](https://www.ibm.com/products/mq)
+- [Aspara at IBM](https://www.ibm.com/cloud/high-speed-data-transfer)
+- [Several APIC Related Webinars](https://developer.ibm.com/apiconnect/resources/category/webinars/)
+- [DataPower Webinars](https://developer.ibm.com/datapower/videos/)
+- [App Connect Channel on YouTube - Extensive List of Videos](https://www.youtube.com/playlist?list=PLzpeuWUENMK2Q77xr7QkvLxU5YxOJxVSH)
+- [Aspera YouTube Channel](https://www.youtube.com/watch?v=z3rcNn2u-LI&list=PLOspHqNVtKAB_rIzQs9tokpQWN8KAHryK)
