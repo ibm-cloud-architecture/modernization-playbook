@@ -4,7 +4,7 @@ module.exports = {
     description: 'Technical approaches to modernizing your existing enterprise applications for the cloud',
     keywords: 'gatsby,theme,carbon',
   },
-  pathPrefix: `/gtc`,
+  pathPrefix: `/modernization-playbook`,
   plugins: [
     {
       resolve: 'gatsby-plugin-manifest',
