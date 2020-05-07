@@ -7,12 +7,8 @@ const links = [
     href: 'https://github.com/carbon-design-system/gatsby-theme-carbon',
   },
   {
-    title: 'Carbon',
-    href: 'https://www.carbondesignsystem.com',
-  },
-  {
-    title: 'Configuration guide',
-    href: '/guides/configuration',
+    title: 'Architecture Center',
+    href: 'https://www.ibm.com/cloud/architecture/architectures/application-modernization/',
   },
 ];
 

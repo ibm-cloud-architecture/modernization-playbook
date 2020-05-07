@@ -1,28 +1,38 @@
-import HomepageTemplate from 'gatsby-theme-carbon/src/templates/Homepage';
-export default HomepageTemplate;
+---
+title: Modernization Playbook 
+description: Notes based on field experiences from Garage on modernizing applications, integration and platform towards a Cloud approach
+---
 
-## MDX content starts here
+export const Title = () => (
+  <span>
+Modernization Playbook <br/> <h3>Move towards cloud-native aproaches</h3>
+  </span>
+);
 
 <PageDescription>
-
-The homepage content here lives in the `src/pages/index.mdx` directory at the root of your project. Just like the other mdx pages, you can use all of our theme components here without importing them. Review the [MDX example source](https://github.com/carbon-design-system/gatsby-theme-carbon/blob/master/packages/example/src/pages/index.mdx).
-
+Move towards cloud-native, leveraging what you already have.  Notes based on field experiences from the IBM Garage for Cloud for modernizing your applications, integrations and establishing a platform to take advantage of a Cloud approach.
 </PageDescription>
 
-<FeatureCard
-    color="dark"
-    href="/getting-started"
-    title="Getting started"
-    actionIcon="arrowRight"
-    className="homepage-feature"
-    >
+<Title>
+What is modernization?
+</Title>
 
-<ArtDirection>
+Modernization is a range of technologies and techniques that involve moving your existing legacy workloads towards a Cloud-native approach based on a cloud platform.  The term is used broadly and can refer to simply lifting and shifting VMs into a Cloud infrastructure but also extends as far as refactoring applications to leverage new architectural patterns such as microservices or event driven architectures.  The goal is to leverage your existing people, practices and technologies and evolve them towards proven patterns that capture the benefits of developing, deploying and operating in a Cloud environment.
 
-![blue vertical stripes](../images/blue-stripes-mobile.png)
-![blue vertical stripes](../images/blue-stripes-tablet.png)
-![blue vertical stripes](../images/blue-stripes.png)
 
-</ArtDirection>
+<Title>Overview</Title>
 
-</FeatureCard>
+<Title>What is impacted when you modernize?</Title>
+
+Modernization impacts a broad set of architecture domains as you evolve and mature more towards a cloud-native approach.  These are key areas of concern as you begin a modernization journey.
+
+* Applications
+* Integration
+* Platform
+* DevOps
+* Day 2 Operations & Site Reliability Engineering(SRE)
+* Cloud native
+
+<Title>How are people impacted?</Title>
+
+An overlooked area is the change required in the people involved in designing, developing and operating your cloud platform and application workloads.  New ways of working enable the cloud squads to take advantage of the modern approaches and technologies.

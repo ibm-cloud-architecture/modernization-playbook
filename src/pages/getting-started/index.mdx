@@ -1,63 +1,36 @@
 ---
-title: Getting started
-description: Quick start guide for getting acclimated with gatsby-theme-carbon
+title: Applications
+description: Moving your existing application workloads to leverage a modern cloud platform
 ---
 
 <PageDescription>
 
-This project is a [Gatsby theme](https://www.gatsbyjs.org/docs/themes/what-are-gatsby-themes/) that empowers developers, writers, and designers to create fast, accessible sites that look and feel like Carbon. Follow along to start creating your own site.
+Move your existing application towards a more cloud-native model built on a modern cloud platform.
 
 </PageDescription>
 
-## First steps
+<Title> Reference Solution Implementations </Title>
 
-1. **Create your site** – use the gatsby CLI to bootstrap your site with the starter
+Application modernization is a journey of moving existing applications to a more modern cloud-native infrastructure.
+A high level overview of key application modernization concepts is available in the [Application Modernization Field Guide](https://www.ibm.com/cloud/garage/content/field-guide/app-modernization-field-guide/) and the IBM Architecture Center [Application Modernization reference architecture](https://www.ibm.com/cloud/garage/architectures/application-modernization/)
 
-   ```sh
-   npx gatsby new my-carbon-site https://github.com/carbon-design-system/gatsby-starter-carbon-theme
-   ```
+## Solutions
 
-2. **Start developing** – navigate into your directory with `cd my-carbon-site`.
+There are several approaches to application modernization and provided are key reference implementations for approaching your implementation
 
-   Start it up using one of the following snippets. You can tell which command to use based on the lock file at the root of your project (`yarn.lock` for yarn and `package-lock.json` for npm). For yarn, type `yarn dev` for npm, you’ll use `npm run dev`.
+### Runtime modernization
+* [Runtime modernization](./liberty/README.md) -- Updating the application runtime to a suitable cloud-native framework (Liberty) and deploying in Red Hat OpenShift. This solution shows different deployment options including using modern CI/CD tools (Tekton & ArgoCD) and using heritage CI/CD tools (Jenkins)
 
-3. **Make some changes!** – open [localhost:8000](//localhost:8000) in your browser to see your site running.
+### Spring Framework modernization
+* [Spring modernization](./spring/README.md) -- Updated a prior Spring application by updating to the latest Spring Boot and deploying in Red Hat OpenShift
 
-   Each of the Items in your side bar correlates to a MDX file in your `src/pages/` directory. Navigate to a site and try editing the corresponding markdown file. You’ll be able to see it update live!
+### Operational modernization with Heritage CI/CD tools
+* [Operation modernization](./was90/README.md) -- Repackaging the application to deploy within a container but maintaining a monolith application without changes to the application or runtime
 
-## 🔍 What’s in here?
 
-Lets check out the structure of our project
+## Additional Resources
 
-    .
-    ├── LICENSE
-    ├── README.md
-    ├── gatsby-config.js
-    ├── node_modules
-    ├── package.json
-    ├── public
-    ├── src
-    │   ├── data
-    │   ├── gatsby-theme-carbon
-    │   ├── images
-    │   └── pages
-    └── yarn.lock
+* [Application Modernization](https://ibm-cloud-architecture.github.io/deliverables/application-modernization.html) assets
+* [Installing](https://cloudpak8s.io/apps/cp4a_overview/) Cloud Pak for Applications
+* [Installing Cloud Pak for Applications on IBM Cloud](https://github.com/vandepol/CP4AonOCPonIBMCloud/blob/master/README.md)
 
-1.  **`/node_modules`**: This directory contains all of the modules of code that your project depends on (npm packages) are automatically installed.
-
-1.  **`/src`**: This directory will contain all of the code related to what you will see on the front-end of your site.
-
-    - **data** this is where you’ll update your sidebar order and contents
-    - **images** you can colocate your images here or store them next to your pages, whichver you chose
-    - **gatsby-theme-carbon** this is where you’ll override (known as shadowing) the default `gatsby-theme-carbon` components
-    - **pages** This is where most of your content will live. You’ll represent each page with an MDX file.
-
-1.  **`.gitignore`**: This file tells git which files it should not track / not maintain a version history for.
-
-1.  **`gatsby-config.js`**: This is the main configuration file for a Gatsby site. This is where you can specify information about your site (metadata) like the site title and description. You’ll notice that all of the configuration for the site is coming from `gatsby-theme-carbon`
-
-1.  **`LICENSE`**: Gatsby is licensed under the Apache 2.0 license.
-
-1.  **`yarn.lock`** (See `package.json` below, first). This is an automatically generated file based on the exact versions of your npm dependencies that were installed for your project. **(You won’t change this file directly).**
-
-1.  **`package.json`**: A manifest file for Node.js projects, which includes things like metadata (the project’s name, author, etc). This manifest is how npm knows which packages to install for your project.

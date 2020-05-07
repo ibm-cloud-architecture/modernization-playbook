@@ -1,74 +1,53 @@
 - title: Getting started
   pages:
     - path: /getting-started
-- title: Demo
+- title: Applications
   pages:
-    - path: /demo
-- title: Gallery
+    - title: Introduction
+      path: /applications/
+- title: Modernizing runtimes with Liberty
   pages:
-    - path: /gallery
-- title: Contributions
+    - title: Introduction
+      path: /applications/liberty
+    - title: Analyze
+      path: /applications/liberty/liberty-analyze
+    - title: Build
+      path: /applications/liberty/liberty-build
+    - title: Deploy
+      path: /applications/liberty/liberty-deploy
+    - title: Deploy using Tekton and ArgoCD
+      path: /applications/liberty/liberty-deploy-tekton-argocd
+    - title: Deploy using Tekton
+      path: /applications/liberty/liberty-deploy-tekton
+    - title: Deploy using Jenkins
+      path: /applications/liberty/liberty-deploy-43-jenkins
+    - title: Deploy using Jenkins (OCP 311)
+      path: /applications/liberty/liberty-deploy-311-jenkins
+    - title: Installing ArgoCD
+      path: /applications/liberty/ArgoCDInstall
+    - title: Installing OpenShift Pipelines
+      path: /applications/liberty/OpenShiftPipelinesInstall
+    - title: Managing session state
+      path: /applications/liberty/liberty-sessions
+- title: Modernizing runtimes with Spring
   pages:
-    - path: /contributions
-- title: Guides
+    - title: Introduction
+      path: /applications/spring/README
+    - title: Build
+      path: /applications/spring/spring-build
+- title: Modernizing operations
   pages:
-    - title: Configuration
-      path: /guides/configuration
-    - title: Authoring MDX
-      path: /guides/MDX
-    - title: Shadowing
-      path: /guides/shadowing
-    - title: Styling
-      path: /guides/styling
-    - title: Navigation
-      path: /guides/navigation/sidebar
-    - title: npm scripts
-      path: /guides/npm-scripts
-- title: Components
+    - title: Introduction
+      path: /applications/was90/README
+    - title: Analyze
+      path: /applications/was90/tWAS-analyze
+    - title: Build
+      path: /applications/was90/tWAS-build
+    - title: Build with WCMT4IC
+      path: /applications/was90/tWAS-build-WCMT4IC
+    - title: Deploy
+      path: /applications/was90/tWAS-deploy
+- title: Day 2 Operations
   pages:
-    - title: Accordion
-      path: /components/Accordion
-    - title: AnchorLinks
-      path: /components/AnchorLinks
-    - title: ArtDirection
-      path: /components/ArtDirection
-    - title: ArticleCard
-      path: /components/ArticleCard
-    - title: Aside
-      path: /components/Aside
-    - title: Caption
-      path: /components/Caption
-    - title: Code blocks
-      path: /components/code-blocks
-    - title: DoDontExample
-      path: /components/DoDontExample
-    - title: DoDontRow
-      path: /components/DoDontRow
-    - title: FeatureCard
-      path: /components/FeatureCard
-    - title: FeedbackDialog
-      path: /components/FeedbackDialog
-    - title: GifPlayer
-      path: /components/GifPlayer
-    - title: Grid
-      path: /components/Grid
-    - title: ImageCard
-      path: /components/ImageCard
-    - title: ImageGallery
-      path: /components/ImageGallery
-    - title: InlineNotification
-      path: /components/InlineNotification
-    - title: Markdown
-      path: /components/markdown
-    - title: MediumPosts
-      path: /components/MediumPosts
-    - title: PageDescription
-      path: /components/PageDescription
-    - title: ResourceCard
-      path: /components/ResourceCard
-    - title: Tabs
-      path: /components/Tabs
-    - title: Title
-      path: /components/Title
-    - title: Video
-      path: /components/Video
+    - title: Install Prometheus
+      path: /day2-ops/README

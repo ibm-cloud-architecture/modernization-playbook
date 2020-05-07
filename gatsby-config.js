@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
-    title: 'Gatsby Theme Carbon',
-    description: 'A Gatsby theme for the carbon design system',
+    title: 'Modernization Playbook',
+    description: 'Technical approaches to modernizing your existing enterprise applications for the cloud',
     keywords: 'gatsby,theme,carbon',
   },
   pathPrefix: `/gtc`,
@@ -25,6 +25,7 @@ module.exports = {
             'https://github.com/carbon-design-system/gatsby-theme-carbon',
           subDirectory: '/packages/example',
         },
+	titleType: 'append'
       },
     },
   ],
