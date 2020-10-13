@@ -27,7 +27,7 @@
       path: /applications/spring/README
     - title: Build
       path: /applications/spring/spring-build
-- title: Modernizing operations
+- title: Operational Modernizing
   pages:
     - title: Introduction
       path: /applications/was90/README
@@ -39,7 +39,7 @@
       path: /applications/was90/tWAS-build-WCMT4IC
     - title: Deploy
       path: /applications/was90/tWAS-deploy
-- title: Integration
+- title: Integration Modernization
   pages:
     - title: Introduction
       path: /integration/
