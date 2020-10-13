@@ -5,7 +5,7 @@
   pages:
     - title: Introduction
       path: /applications/
-- title: Modernizing runtimes with Liberty
+- title: Modernizing using Liberty
   pages:
     - title: Introduction
       path: /applications/liberty
@@ -13,23 +13,15 @@
       path: /applications/liberty/liberty-analyze
     - title: Build
       path: /applications/liberty/liberty-build
-    - title: Deploy
-      path: /applications/liberty/liberty-deploy
-    - title: Deploy using Tekton and ArgoCD
-      path: /applications/liberty/liberty-deploy-tekton-argocd
     - title: Deploy using Tekton
       path: /applications/liberty/liberty-deploy-tekton
     - title: Deploy using Jenkins
       path: /applications/liberty/liberty-deploy-43-jenkins
-    - title: Deploy using Jenkins (OCP 311)
-      path: /applications/liberty/liberty-deploy-311-jenkins
-    - title: Installing ArgoCD
-      path: /applications/liberty/ArgoCDInstall
     - title: Installing OpenShift Pipelines
       path: /applications/liberty/OpenShiftPipelinesInstall
     - title: Managing session state
       path: /applications/liberty/liberty-sessions
-- title: Modernizing runtimes with Spring
+- title: Spring Modernization
   pages:
     - title: Introduction
       path: /applications/spring/README
