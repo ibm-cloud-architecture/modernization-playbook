@@ -359,17 +359,19 @@ The first two `COPY` commands copy the `server.xml` and `jvm.options` files to t
 ## Run the application locally
 Now that the application code changes have been made, the WebSphere Liberty configuration has been created and the Dockerfile is ready, the next step is to build a Docker image and run an instance locally to validate that the application runs correctly.
 
-1. Clone the GitHub repo using the following steps:
+- Clone the GitHub repo using the following steps:
 ```
 git clone https://github.com/ibm-cloud-architecture/appmod-liberty-tekton
 cd appmod-liberty-tekton
 ```
-2. Use Maven to build the application
+
+- Use Maven to build the application
 ``` bash
 mvn clean package
 ```
 The `CustomerOrderServicesApp-0.1.0-SNAPSHOT.ear` file should now be present in `CustomerOrderServicesApp/target/`
-3. Modify the `liberty/server.env` file for your environment as shown below:
+
+- Modify the `liberty/server.env` file for your environment as shown below:
 ``` bash
 DB2_HOST=172.16.52.252
 DB2_PORT=50000
@@ -377,7 +379,8 @@ DB2_DBNAME=ORDERDB
 DB2_USER=db2inst1
 DB2_PASSWORD=db2inst1
 ```
-4. Build the Docker image using the following commands:
+
+- Build the Docker image using the following commands:
 ```
 docker build -t customerorderservices-local:1.0 .
 ```
@@ -411,15 +414,18 @@ Successfully built 2897b25fa45e
 Successfully tagged customerorderservices-local:1.0
 
 ```
-5. Run the newly created Docker image using the commands below:
+
+- Run the newly created Docker image using the commands below:
 ```
-docker run --name customerorderservices-local -d -p 9081:9081 -p 9443:9443 -v server.env:/config/server.env customerorderservices-local:1.0
+docker run --name customerorderservices-local -d -p 9081:9081 -p 9443:9443 -v ${PWD}/liberty/server.env:/config/server.env customerorderservices-local:1.0
 ```
 This command injects the server.env file in the correct location so that it is loaded by WebSphere Liberty on startup.
-6. Check the logs for the WebSphere Liberty server using:
+
+- Check the logs for the WebSphere Liberty server using:
 ```
 docker logs customerorderservices-local
 ```
+
 The result should be that the server is started without error and the application is loaded:
 ```
 Launching defaultServer (WebSphere Application Server 19.0.0.5/wlp-1.0.28.cl190520190522-2227) on IBM J9 VM, version 8.0.5.36 - pxa6480sr5fp36-20190510_01(SR5 FP36) (en_US)
@@ -441,13 +447,16 @@ Launching defaultServer (WebSphere Application Server 19.0.0.5/wlp-1.0.28.cl1905
 [AUDIT   ] CWWKF0012I: The server installed the following features: [appSecurity-2.0, beanValidation-1.0, distributedMap-1.0, ejbLite-3.1, el-3.0, federatedRegistry-1.0, jaxrs-1.1, jdbc-4.1, jndi-1.0, jpa-2.0, json-1.0, jsp-2.3, ldapRegistry-3.0, localConnector-1.0, monitor-1.0, servlet-3.1, ssl-1.0].
 [AUDIT   ] CWWKF0011I: The defaultServer server is ready to run a smarter planet. The defaultServer server started in 12.838 seconds.
 ```
-7. Access the application in a browser using `https://127.0.0.1:9443/CustomerOrderServicesWeb`. Login using `rbarcia` and `bl0wfish` and then add an item to the shopping cart
+
+- Access the application in a browser using `https://127.0.0.1:9443/CustomerOrderServicesWeb`. Login using `rbarcia` and `bl0wfish` and then add an item to the shopping cart
   ![App](images/liberty-build/app.jpg)
 
-8. Validate that the `/metrics` endpoint is available at `http://127.0.0.1:9081/metrics`
+
+- Validate that the `/metrics` endpoint is available at `http://127.0.0.1:9081/metrics`
   ![Metrics](images/liberty-build/metrics.jpg)
 
-9. Stop the Docker container using the commands below:
+
+- Stop the Docker container using the commands below:
 ``` bash
 docker stop customerorderservices-local
 ```
