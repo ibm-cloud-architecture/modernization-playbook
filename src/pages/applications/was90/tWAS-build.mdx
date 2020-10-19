@@ -1,5 +1,5 @@
 ---
-title:  traditional WebSphere Build
+title:  Modernizing operations using traditional WAS - Build
 description: This section covers how to containerize an existing application running on traditional WebSphere Application Server. 
 ---
 
@@ -15,85 +15,112 @@ This section covers how to containerize an existing application running on tradi
 
 </PageDescription>
 
-To do this we have two options on how to migrate.  
-Option 1 (descibed below): Create or use existing wsadmin scripts.  
-Option 2: [Use the WebSphere Configuration Migration Tool for IBM Cloud](tWAS-build-WCMT4IC.md) (WCMT4IC) to extract the configuration from your existing traditional WebSphere Application Server environment.
-
-
-We're going to focus on the method of using existing scripts, since it better matches the best practice for CI/CD pipelines.
-
-Once the environment is running as is, we'll learn how to make modifications to the configuration without having to rebuild your container, and why this is important.
-
 The final versions of the files created in this section can be found in the [was90](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/was90) branch of this repo
 
 ## Summary:
 This section has the following steps:
 
-- [Build the image using existing scripts](tWAS-build.md#building-a-traditional-websphere-docker-container-using-existing-wsadmin-scripts)
+
 - [Test the application locally](tWAS-build.md#test-the-image)
 - [Using environment variables in properties files to allow configuration to be injected in to the runtime environment dynamically.](tWAS-build.md#modifying-configuration-without-rebuilding-container)
 - [Advanced: put your passwords in secrets.](tWAS-build.md#advanced--put-your-passwords-in-secrets)
 
+## Build a container
 
-## Building a traditional WebSphere Docker container using existing wsadmin scripts.
-For this example, we're going to use the Customer Order Application as an example.  We already have a wsadmin script which will configure the environment and install the application.  
+IBM Cloud Transformation Advisor will provide an initial set of files to simplify creating a container for the application.  Transformation Advisor creates a **migration bundle** that will have a Dockerfile, WAS configuration scripts and Kubernetes deployment resources.
 
-Review the contents of the [wsadmin script](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/tWAS/cosConfig.py).  
-This is a legacy application which runs on older frameworks; most notably it uses JPA 2.0 and JAX-RS 1.1.  These are not the default in WAS 9 (as they are in WAS8.5.5, but they are supported).  It is important to modify these settings in the scripts if you don't want to make modifications to your application at this time.
+1. Start by clicking on CustomerOrderServices.ear in IBM Cloud Transformation Advisor.  
+![Customer Order Services application](images/tWAS-build/customerorderservices.png)
 
-We are going to install the application using a properties file, which is an alternative way to install the application, or apply any configuration. The application could also be installed using the wsadmin jython script, but we chose to use the properties file to show the two methods configurations can be applied at build time.
-Review the contents of the [properties file](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/tWAS/app-update.props)
+1. Select **View Migration Plan** to begin process of creating the files needed to containerize the application.
+![Migration Plan](images/tWAS-build/migrationplan.png)
 
-To run these files during container creation we copy them into `/work/config/` folder using the Dockerfile.  Then we run the `/work/configure.sh` which will start the server and run the scripts and apply the properties file configuration.  We also copy the db2 drivers and the application, and anything else the applications needs into the container.   
+1. Verify Manual Upload is selected.  Optionally we could provide the application binary and drivers but we will leave them blank and update the generated files later to provide the information.
 
-Review the contents of the [Dockerfile](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/Dockerfile).
-```
-ARG WEBSPHERE_VERSION=9.0.0.11
+1. Select Download to generate a zip file of the assets needed to build a container for the application.
 
-# Migration requires websphere-traditional >= 9.0.0.11
-FROM ibmcom/websphere-traditional:$WEBSPHERE_VERSION as migration
+1. Review the [migration bundle](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/was90/migration-bundle/customerorderservicesapp_migrationBundle.zip) generated for this application.
 
-#Hardcode password for admin console
-COPY --chown=was:0 tWAS/PASSWORD /tmp/PASSWORD
+1. The [READ_THIS_FIRST.md](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/was90/migration-bundle/READ_THIS_FIRST.md) gives important information on how to use the bundle.
+We will follow the steps listed below.
 
-COPY --chown=was:0 resources/db2/ /opt/IBM/db2drivers/
+1. The DB2 drivers are added to the [lib](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/was90/migration-bundle/lib) directory.
 
-COPY --chown=was:0 resources/jmx_exporter/jmx_prometheus_javaagent-0.11.0.jar /opt/IBM/jmx_exporter/
-COPY --chown=was:0 resources/jmx_exporter/jmx-config.yaml /opt/IBM/jmx_exporter/
+1. The [application ear(]https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/was90/CustomerOrderServicesApp-0.1.0-SNAPSHOT.ear) is added.
 
-# Uncomment to test locally
-#COPY --chown=was:0 tWAS/jvm.props /work/config
+1. The [Dockerfile](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/was855/migration-bundle/Dockerfile) is updated to include the name of the ear file
+    ```
+    COPY --chown=was:root CustomerOrderServicesApp-0.1.0-SNAPSHOT.ear /work/config/CustomerOrderServicesApp-0.1.0-SNAPSHOT.ear
+    ```
+1. The [server_config.py](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/was855/migration-bundle/src/config/install_app.py) is updated to include the name of the application ear file.
+    ```
+    app = AdminApp.install("/work/config/CustomerOrderServicesApp-0.1.0-SNAPSHOT.ear", [parms])
+    ```
 
-COPY --chown=was:0 tWAS/cosConfig.py /work/config/
+1. Build the container image using docker build command.
+The code is in the was90 branch.  Clone the branch to copy the files to your system
+    ```
+    git clone --branch was90 https://github.com/ibm-cloud-architecture/cloudpak-for-applications.git
+    cd cloudpak-for-applications
+    docker build --tag customer-order-app .
+    Sending build context to Docker daemon  23.11MB
+    Step 1/5 : FROM ibmcom/websphere-traditional:latest-ubi
+     ---> fd0ada1243f0
+    Step 2/5 : COPY --chown=was:root CustomerOrderServicesApp-0.1.0-SNAPSHOT.ear /work/config/CustomerOrderServicesApp-0.1.0-SNAPSHOT.ear
+     ---> 1960bcb9ce1b
+    Step 3/5 : COPY --chown=was:root ./src/config /work/config
+     ---> f507eb4297c9
+    Step 4/5 : COPY --chown=was:root ./lib /work/config/lib
+     ---> 408dfe7dc1c2
+    Step 5/5 : RUN /work/configure.sh
+     ---> Running in 8b8cf71da2c9
+    Setting Password
+    Starting server ...................
+    ADMU0116I: Tool information is being logged in file
+               /opt/IBM/WebSphere/AppServer/profiles/AppSrv01/logs/server1/startServer.log
+    ADMU0128I: Starting tool with the AppSrv01 profile
+    ADMU3100I: Reading configuration for server: server1
+    ADMU3200I: Server launched. Waiting for initialization status.
+    ADMU3000I: Server server1 open for e-business; process id is 466
+    Applying configuration
+    + Found config-files under /work/config. Executing...
+    WASX7209I: Connected to process "server1" on node DefaultNode01 using SOAP connector;  The type of process is: UnManagedProcess
+    Installing application ...
+    ADMA5016I: Installation of customerorderservicesapp started.
+    ADMA5058I: Application and module versions are validated with versions of deployment targets.
+    ADMA5005I: The application customerorderservicesapp is configured in the WebSphere Application Server repository.
+    ADMA5005I: The application customerorderservicesapp is configured in the WebSphere Application Server repository.
+    ADMA5081I: The bootstrap address for client module is configured in the WebSphere Application Server repository.
+    ADMA5053I: The library references for the installed optional package are created.
+    ADMA5005I: The application customerorderservicesapp is configured in the WebSphere Application Server repository.
+    ADMA5001I: The application binaries are saved in /opt/IBM/WebSphere/AppServer/profiles/AppSrv01/wstemp/Script1753253ef80/workspace/cells/DefaultCell01/applications/customerorderservicesapp.ear/customerorderservicesapp.ear
+    ADMA5005I: The application customerorderservicesapp is configured in the WebSphere Application Server repository.
+    SECJ0400I: Successfully updated the application customerorderservicesapp with the appContextIDForSecurity information.
+    ADMA5005I: The application customerorderservicesapp is configured in the WebSphere Application Server repository.
+    ADMA5005I: The application customerorderservicesapp is configured in the WebSphere Application Server repository.
+    ADMA5113I: Activation plan created successfully.
+    ADMA5011I: The cleanup of the temp directory for application customerorderservicesapp is complete.
+    ADMA5013I: Application customerorderservicesapp installed successfully.
+    WASX7209I: Connected to process "server1" on node DefaultNode01 using SOAP connector;  The type of process is: UnManagedProcess
+    Starting Creating JVM Properties
+    Starting Creating Authentication Alias
+    Starting Creating Queues
+    Starting Creating Topics
+    Starting Creating Activation Specifications
+    Starting Creating Connection Factories
+    Starting Creating JDBC Providers
+    Starting Creating Variables
+    Starting Saving Configuration Changes Before Application Deployment
+    Starting Application Deployment
+    Stopping server ...................
+    Removing intermediate container 8b8cf71da2c9
+     ---> dfa50aba03f5
+    Successfully built dfa50aba03f5
+    Successfully tagged customer-order-app:latest
+    ````
 
-COPY --chown=was:0 tWAS/app-update.props  /work/config/app-update.props
-COPY --chown=was:0 tWAS/CustomerOrderServicesApp-0.1.0-SNAPSHOT.ear /work/config/CustomerOrderServicesApp-0.1.0-SNAPSHOT.ear
 
-RUN /work/configure.sh
-```
-
-Let's try it...
-
-
-### Build the image
-
-Now it's time to build the image. This guide assumes you have Docker installed.
-
-The code existing in the was90 branch.  Clone the branch to copy the files to your system
-```
-git clone --branch was90 https://github.com/ibm-cloud-architecture/cloudpak-for-applications.git
-cd cloudpak-for-applications
-docker build --tag customer-order-app .
-```
-
-You should see the following messages if image was successfully built (image id may vary):
-
-```
-Successfully built f8d3eafdd30a
-Successfully tagged customer-order-app:latest
-```
-
-Validate that image is in the repository using command (you should also see original websphere-traditional image):
+Validate that image is in the repository using the images command (you should also see original websphere-traditional image):
 
 ```
 $docker images
