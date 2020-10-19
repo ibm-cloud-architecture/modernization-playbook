@@ -1,6 +1,6 @@
 ---
 title: Build
-description: This section covers how to use IBM Cloud Transformation Advisor to analyze an existing traditional WebSphere application. 
+description: This section covers how to use IBM Cloud Transformation Advisor to analyze an existing traditional WebSphere application.
 ---
 
 export const Title = () => (
@@ -24,7 +24,7 @@ This section has the following steps:
     - listing the WebSphere Liberty runtime features that are required
     - configuring a DB2 Data Source
     - configuring a local user registry
-    - using environment variables in the `server.xml` file to allow configuration to be injected in to the runtime environment dynamically such as the DB2 user and password.  
+    - using environment variables in the `server.xml` file to allow configuration to be injected in to the runtime environment dynamically such as the DB2 user and password.
 
 3. Configuring WebSphere Liberty to expose internal metrics in a way that they can be collected by Prometheus
 
@@ -54,7 +54,7 @@ InitialContext().lookup("ejblocal:org.pwte.example.service.ProductSearchService"
 ...
 InitialContext().lookup("java:app/CustomerOrderServices/ProductSearchServiceImpl!org.pwte.example.service.ProductSearchService");
 ...
-```    	
+```
 
   line 53 of `org.pwte.example.resources.CustomerOrderResource.java` is changed as shown below:
 
@@ -189,7 +189,7 @@ DB2_PASSWORD=db2inst1
 ```
 
 ### Monitoring
-[Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com) are used by the IBM CloudPak for Application to monitor applications running in Kubernetes. Prometheus is a systems and service monitoring system. It collects metrics from configured targets at given intervals, evaluates rule expressions, displays the results, and can trigger alerts if some condition is observed to be true.
+[Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com) are widely used in Kubernetes to monitor applications. Prometheus is a systems and service monitoring system. It collects metrics from configured targets at given intervals, evaluates rule expressions, displays the results, and can trigger alerts if some condition is observed to be true.
 
 Prometheus has several components for the collection of Time Series Data, an Alert Manager and a central Prometheus Server which scrapes and stores the data. The data is visualized using a Grafana instance.
 
@@ -250,7 +250,7 @@ WebSphere Liberty also provides a `mpMetrics` feature which takes the data from 
 The Customer Order Services application uses the `jpa-2.0`, `jaxrs-1.1` and `ejbLite-3.1` features which are older than JavaEE7 and is therefore unable to use the `mpMetrics` feature and can't expose a `/metrics` endpoint for Prometheus.
 
 #### Prometheus JMX exporter
-A solution to the problem that the Customer Order Services application has is to use [Prometheus JMX exporter](https://github.com/prometheus/jmx_exporter). The Prometheus JMX exporter connects to any MXBeans on a JVM, retrieves their data and exposes the results on a `/metrics` endpoint so that the data can be scraped by Prometheus.  
+A solution to the problem that the Customer Order Services application has is to use [Prometheus JMX exporter](https://github.com/prometheus/jmx_exporter). The Prometheus JMX exporter connects to any MXBeans on a JVM, retrieves their data and exposes the results on a `/metrics` endpoint so that the data can be scraped by Prometheus.
 
 The JMX exporter is made up of a [JAR file](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/liberty/resources/jmx_exporter) and a [configuration file](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/liberty/resources/jmx_exporter/jmx-config.yml). The configuration file used for the Customer Order Services application is shown below.
 
@@ -323,10 +323,10 @@ Once the application code changes have been made and WebSphere Liberty configura
 
 The `Dockerfile` for the Customer Order Services application is shown below. The file can be found [here](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/liberty/Dockerfile)
 ```
-FROM ibmcom/websphere-liberty:kernel-ubi-min
+FROM ibmcom/websphere-liberty:kernel-java8-ibmjava-ubi
 
-COPY --chown=1001:0 ./liberty/server.xml /config
-COPY --chown=1001:0 ./liberty/jvm.options /config
+COPY --chown=1001:0 ./liberty/server.xml /config/server.xml
+COPY --chown=1001:0 ./liberty/jvm.options /config/jvm.options
 
 ARG SSL=false
 ARG MP_MONITORING=false
@@ -335,29 +335,28 @@ ARG HTTP_ENDPOINT=false
 COPY --chown=1001:0 ./CustomerOrderServicesApp/target/CustomerOrderServicesApp-0.1.0-SNAPSHOT.ear /config/apps/CustomerOrderServicesApp-0.1.0-SNAPSHOT.ear
 COPY --chown=1001:0 ./resources/ /opt/ibm/wlp/usr/shared/resources/
 
-USER 1001
 RUN configure.sh
 ```
 
-IBM provides a set of WebSphere Liberty [Docker images](https://hub.docker.com/_/websphere-liberty) that are part of the IBM CloudPak for Applications. This scenario uses the Docker images that are based on the [RedHat Universal Base Image](https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image). The `ibmcom/websphere-liberty:kernel-ubi-min` image contains only the smallest components of the Liberty server. The features used by the application are loaded in to the Docker image later in the `RUN configure.sh` step.
+IBM provides a set of WebSphere Liberty [Docker images](https://hub.docker.com/_/websphere-liberty). This scenario uses the Docker images that are based on the [RedHat Universal Base Image](https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image). The `ibmcom/websphere-liberty:kernel-java8-ibmjava-ubi` image contains only the smallest components of the Liberty server. The features used by the application are loaded in to the Docker image later in the `RUN configure.sh` step.
 
 The first two `COPY` commands copy the `server.xml` and `jvm.options` files to the `/config` folder on the WebSphere Liberty image. Later in the Dockerfile there are other `COPY` commands to copy the application that has been created by Maven to `/config/apps` and the `DB2 drivers`, `JMX exporter JAR` and `JMX exporter configuration file` to the shared resources folder for Liberty.
 
 ## Run the application locally
 Now that the application code changes have been made, the WebSphere Liberty configuration has been created and the Dockerfile is ready, the next step is to build a Docker image and run an instance locally to validate that the application runs correctly.
 
-1. Clone the GitHub repo and switch to the `liberty` branch using the following steps:  
+1. Clone the GitHub repo and switch to the `liberty` branch using the following steps:
 ```
 git clone SOME_REPO
 cd cloudpak-for-applications
 git checkout liberty
-``` 
-2. Use Maven to build the application  
+```
+2. Use Maven to build the application
 ``` bash
 cd CustomerOrderServicesProject
 mvn clean package
-```  
-The `CustomerOrderServicesApp-0.1.0-SNAPSHOT.ear` file should now be present in `CustomerOrderServicesApp/target/`  
+```
+The `CustomerOrderServicesApp-0.1.0-SNAPSHOT.ear` file should now be present in `CustomerOrderServicesApp/target/`
 3. Modify the `liberty/server.env` file for your environment as shown below:
 ``` bash
 DB2_HOST=172.16.52.252
@@ -371,7 +370,7 @@ DB2_PASSWORD=db2inst1
 cd ../cloudpak-for-applications
 docker build -t customerorderservices-local:1.0 .
 ```
-  The end of the `docker build` command output should be similar to that shown below:  
+  The end of the `docker build` command output should be similar to that shown below:
 ```
 ...
 All assets were successfully installed.
@@ -405,11 +404,11 @@ Successfully tagged customerorderservices-local:1.0
 ```
 docker run --name customerorderservices-local -d -p 9081:9081 -p 9443:9443 -v server.env:/config/server.env customerorderservices-local:1.0
 ```
-This command injects the server.env file in the correct location so that it is loaded by WebSphere Liberty on startup.  
+This command injects the server.env file in the correct location so that it is loaded by WebSphere Liberty on startup.
 6. Check the logs for the WebSphere Liberty server using:
 ```
 docker logs customerorderservices-local
-```  
+```
 The result should be that the server is started without error and the application is loaded:
 ```
 root@gas-twas90:~/djm/latest/cloudpak-for-applications/liberty# docker logs customerorderservices-local
@@ -433,13 +432,13 @@ Launching defaultServer (WebSphere Application Server 19.0.0.5/wlp-1.0.28.cl1905
 [AUDIT   ] CWWKF0012I: The server installed the following features: [appSecurity-2.0, beanValidation-1.0, distributedMap-1.0, ejbLite-3.1, el-3.0, federatedRegistry-1.0, jaxrs-1.1, jdbc-4.1, jndi-1.0, jpa-2.0, json-1.0, jsp-2.3, ldapRegistry-3.0, localConnector-1.0, monitor-1.0, servlet-3.1, ssl-1.0].
 [AUDIT   ] CWWKF0011I: The defaultServer server is ready to run a smarter planet. The defaultServer server started in 12.838 seconds.
 ```
-7. Access the application in a browser using `https://127.0.0.1:9443/CustomerOrderServicesWeb`. Login using `rbarcia` and `bl0wfish` and then add an item to the shopping cart  
+7. Access the application in a browser using `https://127.0.0.1:9443/CustomerOrderServicesWeb`. Login using `rbarcia` and `bl0wfish` and then add an item to the shopping cart
   ![App](images/liberty-build/app.jpg)
 
-8. Validate that the `/metrics` endpoint is available at `http://127.0.0.1:9081/metrics`  
+8. Validate that the `/metrics` endpoint is available at `http://127.0.0.1:9081/metrics`
   ![Metrics](images/liberty-build/metrics.jpg)
 
-9. Stop the Docker container using the commands below:  
+9. Stop the Docker container using the commands below:
 ``` bash
 docker stop customerorderservices-local
 ```
@@ -449,4 +448,4 @@ The intention of this traditional WebSphere V855 --> Liberty (Private Cloud) sce
 
 In this section you have moved the application to WebSphere Liberty and tested it locally in a Docker container.
 
-Now proceed to the [Liberty - Deploy](liberty-deploy.md) section where the process of automating the deployment of the application to a Kubernetes runtime will be covered step-by-step
+Now proceed to the [Liberty - Deploy](liberty-deploy) section where the process of automating the deployment of the application to a Kubernetes runtime will be covered step-by-step
