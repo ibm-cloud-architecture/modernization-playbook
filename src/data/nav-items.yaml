@@ -27,7 +27,7 @@
       path: /applications/spring/README
     - title: Build
       path: /applications/spring/spring-build
-- title: Operational Modernizing
+- title: Operational Modernization
   pages:
     - title: Introduction
       path: /applications/was90/README

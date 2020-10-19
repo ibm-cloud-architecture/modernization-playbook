@@ -58,7 +58,7 @@ Once IBM Cloud Transformation Advisor is installed, it is necessary to create a 
 
   ![Home Page](images/tWAS-analyze/workspace1.jpg)
 
-2. Enter a Workspace name such as `CloudPak_for_Applications` and click **Next**
+2. Enter a Workspace name such as `CustomerOrderServices` and click **Next**
 
   ![Workspace](images/tWAS-analyze/workspace2.jpg)
 
@@ -74,18 +74,18 @@ Once IBM Cloud Transformation Advisor is installed, it is necessary to create a 
 
   ![Download](images/tWAS-analyze/download.jpg)
 
-  This results in a file with a name similar to `transformationadvisor-Linux_CloudPak_for_Applications_WAS855_AppSrv01.tgz` being downloaded.
+  This results in a file with a name similar to `transformationadvisor-Linux_CustomerOrderServices_WAS855_AppSrv01.tgz` being downloaded.
 
 ## Run the Data Collector
 Upload the Data Collector zip file that was downloaded from IBM Cloud Transformation Advisor in the previous step to the machine that the WebSphere ND Deployment Manager or the Standalone WebSphere Application Server is installed. The directory used is arbitrary.
 
-1. Navigate to the directory you uploaded the `transformationadvisor-Linux_CloudPak_for_Applications_WAS855_AppSrv01.tgz` file to and issue the following commands to extract the Data Collector:
+1. Navigate to the directory you uploaded the `transformationadvisor-Linux_CustomerOrderServices_WAS855_AppSrv01.tgz` file to and issue the following commands to extract the Data Collector:
 
   ```bash
   mkdir datacollector
   cd datacollector
-  mv transformationadvisor-Linux_CloudPak_for_Applications_WAS855_AppSrv01.tgz .
-  tar -zxvf transformationadvisor-Linux_CloudPak_for_Applications_WAS855_AppSrv01.tgz
+  mv transformationadvisor-Linux_CustomerOrderServices_WAS855_AppSrv01.tgz .
+  tar -zxvf transformationadvisor-Linux_CustomerOrderServices_WAS855_AppSrv01.tgz
   cd transformationadvisor-*
   ```
 
