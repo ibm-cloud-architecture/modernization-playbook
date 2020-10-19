@@ -1,29 +1,48 @@
-# Cloud Pak for Applications: Operational Modernization Solution
+---
+title: Modernizing operations
+description: Moving workloads as-is to a container platform
+---
+
+export const Title = () => (
+  <span>
+Modernizing operations<br/> <h2>Moving workloads as-is to a container platform</h2>
+  </span>
+);
+
+<PageDescription>
+
+Repackaging workloads as-is to a container without requiring development teams to make application changes.  
+Explore how to move a WebSphere application to run on Red Hat OpenShift Container Platform with a traditional WAS container.
+
+</PageDescription>
+
+<AnchorLinks small>
+  <AnchorLink>Introduction</AnchorLink>
+  <AnchorLink>Application Overview </AnchorLink>
+  <AnchorLink>How the Application was Modernized</AnchorLink>
+  <AnchorLink>Analysis</AnchorLink>
+  <AnchorLink>Build</AnchorLink>
+  <AnchorLink>Deploy</AnchorLink>
+</AnchorLinks>
 
 ## Introduction
-**Operational modernization** gives an operations team the opportunity to embrace modern operations best practices without putting change requirements on the development team. Modernizing from WebSphere Network Deployment (ND) to the **traditional WebSphere Application Server Base V9 runtime** in a container allows the application to be moved to the cloud without code changes.
+**[Operational modernization](https://www.ibm.com/cloud/architecture/architectures/op-modernization-solution)** gives an operations team the opportunity to embrace modern operations best practices without putting change requirements on the development team. 
+Modernizing from WebSphere Network Deployment (ND) to the **traditional WebSphere Application Server Base V9 runtime** in a container allows the application to be moved to the cloud without code changes.
 
 The scaling, routing, clustering, high availability and continuous availability functionality that WebSphere ND was required for previously can be provided by the container runtime and allows the operations team to run cloud-native and older applications in the same environment with the same standardized logging, monitoring and security frameworks.
 
-While traditional WebSphere isn't a 'built for the cloud' runtime like WebSphere Liberty, it can still be run in container and will receive the benefits of the consistency and reliability of containers as well as helping to improve DevOps and speed to market.
+While traditional WebSphere isn't a 'built for the cloud' runtime like WebSphere Liberty, it can still be run in a container and will receive the benefits of the consistency and reliability of containers as well as helping to improve DevOps and speed to market.
 
-**This type of modernization shouldn't require any code changes** and can be driven by the operations team. **This path gets the application in to a container with the least amount of effort but doesn't modernize the application or the runtime.**
+This type of modernization **should not require any code changes** and can be driven by the operations team. This path gets the application in to a container with the **least amount of effort but doesn't modernize the application or the runtime.**
 
 As organizations modernize to cloud platforms, new technologies and methodologies will be used for build, deployment and management of applications. While this modernization will be focused on cloud-native (built for the cloud) applications, using the traditional WebSphere container will allow common technologies and methodologies to be used regardless of the runtime.
 
-  The diagram below shows the high level decision flow where IBM Cloud Transformation Advisor is used to analyze existing assets and a decision is made to not make code changes to the application and use the traditional WebSphere container as the target runtime.
+The diagram below shows the high level decision flow where IBM Cloud Transformation Advisor is used to analyze existing assets and a decision is made to not make code changes to the application and use the traditional WebSphere container as the target runtime.
 
-  ![Liberty flow](images/tWASflow.jpg)
+![Liberty flow](images/tWASflow.jpg)
 
-This repository holds a solution that is the result of a **operational modernization** for an existing WebSphere Java EE application that was moved from WebSphere ND v8.5.5 to the traditional WebSphere Base v9 container and is deployed by the IBM CloudPak for Applications to RedHat OpenShift.
+This repository holds a solution that is the result of a **operational modernization** for an existing WebSphere Java EE application that was moved from WebSphere ND v8.5.5 to the traditional WebSphere Base v9 container and is deployed by the IBM CloudPak for Applications to Red Hat OpenShift.
 
-## Table of Contents
-
-- [Application Overview](#application-overview)
-- [How the Application was Modernized](#how-the-application-was-modernized)
-  - [Analysis](#analysis)
-  - [Build](#build)
-  - [Deploy](#deploy)
 - [Deploy the Application](#deploy-the-application)
   - [Getting the project repository](#getting-the-project-repository)
   - [Create the Security Context Constraint](#create-the-security-context-constraint)
@@ -50,7 +69,7 @@ There are several components of the overall application architecture:
   - This build of the application uses JavaEE6 features for EJBs and JPA.
 - The next tier of the application, named **CustomerOrderServicesWeb**, exposes the necessary business APIs via REST-based web services.  This component leverages the [JAX-RS](https://en.wikipedia.org/wiki/Java_API_for_RESTful_Web_Services) libraries for creating Java-based REST services with minimal coding effort.
   - This build of the application is using **JAX-RS 1.1** version of the respective capability.
-- The application's user interface is exposed through the **CustomerOrderServicesWeb** component as well, in the form of a [Dojo Toolkit](#tbd)-based JavaScript application.  Delivering the user interface and business APIs in the same component is one major inhibitor our migration strategy will help to alleviate in the long-term.
+- The application's user interface is exposed through the **CustomerOrderServicesWeb** component as well, in the form of a Dojo Toolkit-based JavaScript application.  Delivering the user interface and business APIs in the same component is one major inhibitor our migration strategy will help to alleviate in the long-term.
 - Finally, there is an additional integration testing component, named **CustomerOrderServicesTest** that is built to quickly validate an application's build and deployment to a given application server.  This test component contains both **JPA** and **JAX-RS**-based tests.
 
 ## How the Application was Modernized
@@ -59,23 +78,23 @@ In order to modernize the application from WebSphere ND v8.5.5 to the WebSphere 
 ### Analysis
 [IBM Cloud Transformation Advisor](https://www.ibm.com/cloud/garage/practices/learn/ibm-transformation-advisor) was used to analyze the existing Customer Order Services application and the WebSphere ND runtime. The steps were:
 
-1. Install IBM Cloud Transformation Advisor either in to a [Kubernetes Cluster](https://developer.ibm.com/recipes/tutorials/deploying-transformation-advisor-into-ibm-cloud-private/) or [locally](https://www.ibm.com/cloud/garage/tutorials/install-ibm-transformation-advisor-local)
+1. [Install IBM Cloud Transformation Advisor](https://www.ibm.com/garage/method/practices/learn/ibm-transformation-advisor) either with an Operator, locally, or as part of IBM Cloud Pak for Applications.
 
-2. Download and execute the **Data Collector** against the existing WebSphere ND runtime
+2. Download and execute the ** Transformation Advisor Data Collector** against the existing WebSphere ND runtime.
 
 3. Upload the results of the data collection in to IBM Cloud Transformation Advisor and review the analysis. A screenshot of the analysis is shown below:
 
-  ![tWAS](images/tWAS-analyze/analysis2.jpg)
+  ![tWAS](images/tWAS-analyze/analysis2.png)
 
-  In the case of the **CustomerOrderServicesApp.ear** application, IBM Cloud Transformation Advisor has determined that the migration to WebSphere Traditional on Private Cloud is of **Moderate** complexity and that there are four **Severe Issues** that have been detected.
+  In the case of the **CustomerOrderServicesApp.ear** application, IBM Cloud Transformation Advisor has determined that the migration to WebSphere traditional is of **Simple** complexity and that there are six **Suggested Issues** that have been detected.
 
-4. Drilling down in to **Detailed Migration Analysis Report** that is part of the application analysis, it is apparent that IBM Cloud Transformation Advisor has detected that there are issues with JPA, specifically that the second-level cache and the JPA configuration properties must be migrated and with JAX-RS (missing Apache and Wink packages). These issues are related to a decision that was taken by IBM to allow WebSphere Application Server V9 to run in either JPA 2.0 or JPA 2.1 mode [as described here](https://www.ibm.com/support/knowledgecenter/SSEQTP_9.0.0/com.ibm.websphere.base.doc/ae/cejb_jpa21_behavior.html) and in either JAX-RS 2.0 or JAX-RS 1.1 mode [as described here](https://www.ibm.com/support/knowledgecenter/en/SS7K4U_9.0.0/com.ibm.websphere.zseries.doc/ae/rwbs_jaxrs_coexist.html). In order to run in JPA 2.1 mode and JAX-RS 2.0 mode, the changes highlighted by IBM Cloud Transformation Advisor must be made to the application. **However, this application can run in JPA 2.0 mode and JAX-RS 1.1 mode with no changes**.
+4. Drilling down in to **Detailed Migration Analysis Report** that is part of the application analysis, it is worth noting that IBM Cloud Transformation Advisor has detected that there are issues with JPA. In this case it determined to use a non-default setting to avoid an issue where the second-level cache and the JPA configuration properties would need to be migrated. There is also a JAX-RS suggestion to use a non-default setting.  If not using the non-default settings there would be changes required with JAX-RS (to handle missing Apache and Wink packages). These two issues are related to a decision that was taken by IBM to allow WebSphere Application Server V9 to run in either JPA 2.0 or JPA 2.1 mode [as described here](https://www.ibm.com/support/knowledgecenter/SSEQTP_9.0.0/com.ibm.websphere.base.doc/ae/cejb_jpa21_behavior.html) and in either JAX-RS 2.0 or JAX-RS 1.1 mode [as described here](https://www.ibm.com/support/knowledgecenter/en/SS7K4U_9.0.0/com.ibm.websphere.zseries.doc/ae/rwbs_jaxrs_coexist.html). Transformation Advisor will make the needed changes for you in order to run in JPA 2.1 mode and JAX-RS 2.0 mode. The application **can run** in JPA 2.0 mode and JAX-RS 1.1 mode **with no changes** by the user due to the automated changes Transformation Advisor makes.
 
-  ![tWAS](images/tWAS-analyze/issues1.jpg)
+  ![tWAS](images/tWAS-analyze/issues1.png)
 
 5. In summary, no code changes are required to move this application to the traditional WebSphere Base v9 runtime and the decision was taken to proceed with the operational modernization.
 
-Detailed, step-by-step instructions on how to replicate these steps are provided [here](tWAS-analyze.md)
+Detailed, step-by-step instructions on how to replicate these steps are provided [here](tWAS-analyze)
 
 ### Build
 The **build** phase created the traditional WebSphere container configuration artifacts. The steps were:
@@ -90,30 +109,26 @@ The **build** phase created the traditional WebSphere container configuration ar
 
 3. The containerized application was tested locally before the code and configuration files were committed to the **git** repository
 
-Detailed, step-by-step instructions on how to replicate these steps are provided [here](tWAS-build.md)
+Detailed, step-by-step instructions on how to replicate these steps are provided [here](tWAS-build)
 
 ### Deploy
-The **deploy** phase created the Jenkins, Kubernetes and RedHat OpenShift artifacts required to automate the build and deployment pipeline for the application. For illustration purposes, the application was deployed to three different RedHat OpenShift projects to simulate `development`, `staging` and `production`. The diagram below shows the flow through the pipeline. A more detailed description can be found [here]((tWAS-deploy.md))
+The **deploy** phase created the Jenkins, Kubernetes and Red Hat OpenShift artifacts required to automate the build and deployment pipeline for the application. For illustration purposes, the application was deployed to three different Red Hat OpenShift projects to simulate `development`, `staging` and `production`. The diagram below shows the flow through the pipeline. A more detailed description can be found [here]((tWAS-deploy.md))
 
   ![Pipeline](images/tWAS-deploy/overview.jpg)
 
 The steps were:
 
-1. Configure the RedHat OpenShift Cluster for WebSphere by creating the necessary `SecurityContextConstraints` definition. The file can be found here:
+1. Configure the Red Hat OpenShift Cluster for WebSphere by creating the necessary `SecurityContextConstraints` definition. The file can be found here:
+    - [scc.yaml](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/Deployment/OpenShift/ssc.yaml)
 
-- [scc.yaml](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/Deployment/OpenShift/ssc.yaml)
+2. Create the Red Hat OpenShift **build template** that would be used to define the Red Hat OpenShift artifacts related to the build process including `ImageStream` and `BuildConfig` definitions. The file can be found here:
+    - [template-twas-build.yaml](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/Deployment/OpenShift/template-twas-build.yaml)
 
-2. Create the RedHat OpenShift **build template** that would be used to define the RedHat OpenShift artifacts related to the build process including `ImageStream` and `BuildConfig` definitions. The file can be found here:
-
-- [template-twas-build.yaml](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/Deployment/OpenShift/template-twas-build.yaml)
-
-3. Create the RedHat OpenShift **deployment template** that would be used to define the RedHat OpenShift artifacts related to the Customer Order Services application including `DeploymentConfig`, `Service` and `Route` definitions. The file can be found here:
-
-- [template-twas-deploy.yaml](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/Deployment/OpenShift/template-twas-deploy.yaml)
+3. Create the Red Hat OpenShift **deployment template** that would be used to define the Red Hat OpenShift artifacts related to the Customer Order Services application including `DeploymentConfig`, `Service` and `Route` definitions. The file can be found here:
+    - [template-twas-deploy.yaml](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/Deployment/OpenShift/template-twas-deploy.yaml)
 
 4. Create the Jenkins `Jenkinsfile` for the pipeline. The Jenkinsfile defines the steps that the pipeline takes to build the Customer Order Services application EAR file, create an immutable Docker Image and then move the image through the `dev`, `stage` and `prod` environments. The file can be found here:
-
-- [Jenkinsfile](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/Jenkinsfile)
+    - [Jenkinsfile](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/Jenkinsfile)
 
 5. Create the `build` project, load the **build template** and configure **Jenkins**
 
@@ -124,13 +139,13 @@ The steps were:
 Detailed, step-by-step instructions on how to replicate these steps are provided [here](tWAS-deploy.md)
 
 ## Deploy the Application
-The following steps will deploy the modernized Customer Order Services application in a traditional WebSphere container to a RedHat OpenShift cluster.
+The following steps will deploy the modernized Customer Order Services application in a traditional WebSphere container to a Red Hat OpenShift cluster.
 
 ### Prerequisites
 You will need the following:
 
 - [Git CLI](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-- RedHat OpenShift 3.11 with Cluster Admin permissions
+- Red Hat OpenShift 3.11 with Cluster Admin permissions
 - [oc CLI](https://docs.openshift.com/container-platform/3.11/cli_reference/get_started_cli.html)
 - DB2 Database
 
@@ -175,7 +190,7 @@ oc apply -f ssc.yaml
 ```
 
 ### Create the projects
-Four RedHat OpenShift projects are required in this scenario:
+Four Red Hat OpenShift projects are required in this scenario:
 - Build: this project will contain the Jenkins server and the artifacts used to build the application image  
 - Dev: this is the `development` environment for this application
 - Stage: this is the `staging` environment for this application
@@ -203,7 +218,7 @@ oc adm policy add-scc-to-user ibm-websphere-scc -z websphere -n cos-twas-prod
 ```
 
 ### Deploy Jenkins
-Some RedHat OpenShift clusters are configured to automatically provision a Jenkins instance in a build project. The steps below can be used if your cluster is not configured for automatic Jenkins provisioning:
+Some Red Hat OpenShift clusters are configured to automatically provision a Jenkins instance in a build project. The steps below can be used if your cluster is not configured for automatic Jenkins provisioning:
 
 ```
 oc project cos-liberty-build
@@ -222,7 +237,7 @@ oc policy add-role-to-user edit system:serviceaccount:cos-twas-build:jenkins -n 
 ```
 
 ### Import the deployment templates
-RedHat OpenShift [templates](https://docs.openshift.com/container-platform/3.11/dev_guide/templates.html) are used to make artifact creation easier and repeatable. The template definition provided [here](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/liberty/Deployment/OpenShift/template-liberty-deploy.yaml) defines a Kubernetes [`Service`](https://kubernetes.io/docs/concepts/services-networking/service/), [`Route`](https://docs.openshift.com/container-platform/3.11/architecture/networking/routes.html) and [`DeploymentConfig`](https://docs.openshift.com/container-platform/3.11/architecture/core_concepts/deployments.html#deployments-and-deployment-configurations) for the CustomerOrderServices application.
+Red Hat OpenShift [templates](https://docs.openshift.com/container-platform/3.11/dev_guide/templates.html) are used to make artifact creation easier and repeatable. The template definition provided [here](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/liberty/Deployment/OpenShift/template-liberty-deploy.yaml) defines a Kubernetes [`Service`](https://kubernetes.io/docs/concepts/services-networking/service/), [`Route`](https://docs.openshift.com/container-platform/3.11/architecture/networking/routes.html) and [`DeploymentConfig`](https://docs.openshift.com/container-platform/3.11/architecture/core_concepts/deployments.html#deployments-and-deployment-configurations) for the CustomerOrderServices application.
 
 The `gse-twas-deploy` template defines the following:
 - `service` listening on ports `9080`, `9443` and `9082`
@@ -243,7 +258,7 @@ oc create -f template-twas-deploy.yaml -n cos-twas-prod
 ```
 
 ### Create the deployment definitions
-In this step the `gse-twas-deploy` template will be used to create a RedHat OpenShift [application](https://docs.openshift.com/container-platform/3.11/dev_guide/application_lifecycle/new_app.html) named `cos-twas` in the `dev`, `stage` and `prod` namespaces.
+In this step the `gse-twas-deploy` template will be used to create a Red Hat OpenShift [application](https://docs.openshift.com/container-platform/3.11/dev_guide/application_lifecycle/new_app.html) named `cos-twas` in the `dev`, `stage` and `prod` namespaces.
 
 The result will be:
 - `service` listening on ports `9080`, `9443` and `9082`
@@ -274,7 +289,7 @@ oc create -f template-twas-build.yaml -n cos-twas-build
 ```
 
 ### Create the build definitions
-In this step the `gse-twas-build` template will be used to create a RedHat OpenShift [application](https://docs.openshift.com/container-platform/3.11/dev_guide/application_lifecycle/new_app.html) named `cos-twas` in the `build` namespaces.
+In this step the `gse-twas-build` template will be used to create a Red Hat OpenShift [application](https://docs.openshift.com/container-platform/3.11/dev_guide/application_lifecycle/new_app.html) named `cos-twas` in the `build` namespaces.
 
 The result will be:
 - An [ImageStream](https://docs.openshift.com/container-platform/3.11/dev_guide/managing_images.html) for the application image. This will be populated by the Jenkins Pipeline
@@ -289,7 +304,7 @@ oc new-app gse-twas-build -p APPLICATION_NAME=cos-twas -p SOURCE_URL="https://gi
 ```
 
 ### Run the pipeline  
-The newly created pipeline can be started from the RedHat OpenShift console which allows access to the Jenkins logs but also tracks the progress in the OCP console.
+The newly created pipeline can be started from the Red Hat OpenShift console which allows access to the Jenkins logs but also tracks the progress in the OCP console.
 
 1. Navigate to **Application Console --> Customer Order Services on twas - Build --> Builds --> Pipelines** and click the **Start Pipeline** button
 
