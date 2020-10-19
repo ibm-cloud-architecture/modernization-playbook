@@ -13,10 +13,24 @@ Modernizing runtimes with Liberty <br/> <h2>Build modernized application</h2>
 This section covers how to make the minimal code changes required to allow the application to run on the Liberty runtime and how to create the configuration required for the Liberty runtime. The Liberty runtime and Docker image configuration will take in to account factors such as the requirement to inject environment specific configuration (such as JDBC Datasource User IDs and Passwords) at runtime and how to integrate with the Logging and Monitoring framework of the Cloud platform.
 </PageDescription>
 
-The final versions of the files created in this section can be found in the `liberty` branch of [this repo](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/liberty)
+The final versions of the files created in this section can be found in [this repo](https://github.com/ibm-cloud-architecture/appmod-liberty-tekton)
 
 ## Summary
 This section has the following steps:
+
+<AnchorLinks small>
+  <AnchorLink>Overview</AnchorLink>
+  <AnchorLink>Code changes</AnchorLink>
+  <AnchorLink>Create the WebSphere Liberty server.xml file</AnchorLink>
+  <AnchorLink>Handling environment specific configuration</AnchorLink>
+  <AnchorLink>Monitoring</AnchorLink>
+  <AnchorLink>Project structure</AnchorLink>
+  <AnchorLink>Create the Docker Dockerfile</AnchorLink>
+  <AnchorLink>Run the application locally</AnchorLink>
+</AnchorLinks>
+
+## Overview
+This section covers the following steps that are required to build and run the CustomerOrderServices application locally in a Docker container.
 
 1. Make minimal code changes to the application based on the analysis from IBM Cloud Transformation Advisor
 
@@ -88,7 +102,7 @@ WebSphere Liberty is configured by exception. The runtime environment operates f
 
 **Features** are the units of functionality by which you control the pieces of the runtime environment that are loaded into a particular server. They are the primary mechanism that makes the server composable. The list of features that you specify in the server configuration provides a functional server. See [Liberty features](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/rwlp_feat.html) for more information.
 
-In this section, the `server.xml` file to prepare the Liberty server to run the Customer Order Services application will be reviewed. The file can be found [here](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/liberty/liberty/server.xml). and is shown below:
+In this section, the `server.xml` file to prepare the Liberty server to run the Customer Order Services application will be reviewed. The file can be found [here](https://github.com/ibm-cloud-architecture/appmod-liberty-tekton/blob/master/liberty/server.xml). and is shown below:
 
 
 ```xml
@@ -160,7 +174,7 @@ The `classloader` is configured becuase IBM Cloud Transformation Advisor highlig
 
 **The user of system provided Apache Wink APIs requires configuration** To use system-provided third-party APIs in Liberty applications, you must configure the applications to include the APIs. In WebSphere Application Server traditional, these APIs are available without configuration. This is a configuration only change and can be achieved by using a `classloader` definition in the Liberty server.xml file.
 
-### Environment Specific Configuration
+## Handling environment specific configuration
 Applications deployed to an Application Server typically require access to backend services such as Databases, Message Queues, LDAP servers and other applications. Connection information for the backend services might include URL, Hostname, Port, UserID and Password and this information is often different depending on the environment (e.g. Dev, Test or Production) that the application is deployed to. In the case of the Customer Order Services application, a connection to a DB2 database is required.
 
 In order to take advantage of the portability provided by a platform such as Kubernetes and the speed of DevOps it is necessary to deploy applications in **immutable** containers using automation.
@@ -179,7 +193,7 @@ Using the `env.` prefex in the WebSphere Liberty `server.xml` forces the runtime
 </dataSource>
 ```
 
-In a native development environment (non-Docker) a `server.env` file can be used to inject the environment variables directly in to WebSphere Liberty when it starts. This avoids having to set environment variables on the development machine. This file is placed in the same folder as the `server.xml` file and is read by Liberty on startup. The file can be found [here](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/liberty/liberty/server.env). and is shown below:
+In a native development environment (non-Docker) a `server.env` file can be used to inject the environment variables directly in to WebSphere Liberty when it starts. This avoids having to set environment variables on the development machine. This file is placed in the same folder as the `server.xml` file and is read by Liberty on startup. The file can be found [here](https://github.com/ibm-cloud-architecture/appmod-liberty-tekton/blob/master/liberty/server.env). and is shown below:
 ```
 DB2_HOST=172.16.52.252
 DB2_PORT=50000
@@ -252,7 +266,7 @@ The Customer Order Services application uses the `jpa-2.0`, `jaxrs-1.1` and `ejb
 #### Prometheus JMX exporter
 A solution to the problem that the Customer Order Services application has is to use [Prometheus JMX exporter](https://github.com/prometheus/jmx_exporter). The Prometheus JMX exporter connects to any MXBeans on a JVM, retrieves their data and exposes the results on a `/metrics` endpoint so that the data can be scraped by Prometheus.
 
-The JMX exporter is made up of a [JAR file](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/liberty/resources/jmx_exporter) and a [configuration file](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/liberty/resources/jmx_exporter/jmx-config.yml). The configuration file used for the Customer Order Services application is shown below.
+The JMX exporter is made up of a [JAR file](https://github.com/ibm-cloud-architecture/appmod-liberty-tekton/blob/master/resources/jmx_exporter) and a [configuration file](https://github.com/ibm-cloud-architecture/appmod-liberty-tekton/blob/master/resources/jmx_exporter/jmx-config.yml). The configuration file used for the Customer Order Services application is shown below.
 
 ```
 ---
@@ -262,7 +276,7 @@ lowercaseOutputName: false
 lowercaseOutputLabelNames: false
 ```
 
-In order to connect the JMX exporter and configuration file to Liberty on startup, a `jvm.options` file is required. The [jvm.options](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/liberty/liberty/jvm.options) file is shown below.
+In order to connect the JMX exporter and configuration file to Liberty on startup, a `jvm.options` file is required. The [jvm.options](https://github.com/ibm-cloud-architecture/appmod-liberty-tekton/blob/master/liberty/jvm.options) file is shown below.
 
 ```
 -javaagent:/opt/ibm/wlp/usr/shared/resources/jmx_exporter/jmx_prometheus_javaagent-0.11.0.jar=9081:/opt/ibm/wlp/usr/shared/resources/jmx_exporter/jmx-config.yml
@@ -321,7 +335,7 @@ The following folders and files have been added to the project:
 ## Create the Docker Dockerfile
 Once the application code changes have been made and WebSphere Liberty configuration has been created the next step is to build a Docker image that contains the application and configuration. The build script to create a Docker image is a [Dockerfile](https://docs.docker.com/engine/reference/builder/).
 
-The `Dockerfile` for the Customer Order Services application is shown below. The file can be found [here](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/liberty/Dockerfile)
+The `Dockerfile` for the Customer Order Services application is shown below. The file can be found [here](https://github.com/ibm-cloud-architecture/appmod-liberty-tekton/blob/master/Dockerfile)
 ```
 FROM ibmcom/websphere-liberty:kernel-java8-ibmjava-ubi
 
@@ -347,13 +361,11 @@ Now that the application code changes have been made, the WebSphere Liberty conf
 
 1. Clone the GitHub repo and switch to the `liberty` branch using the following steps:
 ```
-git clone SOME_REPO
-cd cloudpak-for-applications
-git checkout liberty
+git clone https://github.com/ibm-cloud-architecture/appmod-liberty-tekton
+cd appmod-liberty-tekton
 ```
 2. Use Maven to build the application
 ``` bash
-cd CustomerOrderServicesProject
 mvn clean package
 ```
 The `CustomerOrderServicesApp-0.1.0-SNAPSHOT.ear` file should now be present in `CustomerOrderServicesApp/target/`
@@ -367,7 +379,6 @@ DB2_PASSWORD=db2inst1
 ```
 4. Build the Docker image using the following commands:
 ```
-cd ../cloudpak-for-applications
 docker build -t customerorderservices-local:1.0 .
 ```
   The end of the `docker build` command output should be similar to that shown below:
@@ -411,8 +422,6 @@ docker logs customerorderservices-local
 ```
 The result should be that the server is started without error and the application is loaded:
 ```
-root@gas-twas90:~/djm/latest/cloudpak-for-applications/liberty# docker logs customerorderservices-local
-
 Launching defaultServer (WebSphere Application Server 19.0.0.5/wlp-1.0.28.cl190520190522-2227) on IBM J9 VM, version 8.0.5.36 - pxa6480sr5fp36-20190510_01(SR5 FP36) (en_US)
 [AUDIT   ] CWWKE0001I: The server defaultServer has been launched.
 [AUDIT   ] CWWKE0100I: This product is licensed for development, and limited production use. The full license terms can be viewed here: https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/license/base_ilan/ilan/19.0.0.5/lafiles/en.html
@@ -444,7 +453,7 @@ docker stop customerorderservices-local
 ```
 
 ## Review and Next Steps
-The intention of this traditional WebSphere V855 --> Liberty (Private Cloud) scenario is to migrate the Customer Order Services application to the cloud-ready new runtime with minimal code changes.
+The intention of this traditional WebSphere V855 --> WebSphere Liberty scenario is to migrate the Customer Order Services application to the cloud-ready new runtime with minimal code changes.
 
 In this section you have moved the application to WebSphere Liberty and tested it locally in a Docker container.
 
