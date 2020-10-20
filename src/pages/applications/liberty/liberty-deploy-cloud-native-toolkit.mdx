@@ -1,6 +1,6 @@
 ---
 title: Modernizing runtimes with Liberty - Deploy using the Cloud Native Toolkit
-description: This section covers how to deploy the application to RedHat OpenShift using the pipelines provided by the Cloud Native Toolkit. The Cloud Native Toolkit installs and configures an open-source collection of assets to bootstrap Red Hat OpenShift ready for applications to be developed and deployed.
+description: This section covers how to deploy the application to Red Hat OpenShift using the pipelines provided by the Cloud Native Toolkit. The Cloud Native Toolkit installs and configures an open-source collection of assets to bootstrap Red Hat OpenShift ready for applications to be developed and deployed.
 ---
 
 export const Title = () => (
@@ -14,7 +14,7 @@ Modernizing runtimes with Liberty <br/> <h2>Deploy using the Cloud Native Toolki
 This section covers how to deploy the CustomerOrderServices application to Red Hat OpenShift using the pipelines provided by the [Cloud Native Toolkit](https://cloudnativetoolkit.dev)
 </PageDescription>
 
-The Cloud Native Toolkit installs and configures an open-source collection of assets to bootstrap Red Hat OpenShift ready for applications to be developed and deployed.
+[Cloud Native Toolkit](https://cloudnativetoolkit.dev) is an open-source collection of assets that provide an environment for developing cloud-native applications for deployment within Red Hat OpenShift and Kubernetes. It embodies IBM Garage Method principles and practices for consistently developed applications, incorporating best practices that increase developer velocity for efficient delivery of business value.
 
 The diagram below shows the flow of the pipeline which starts when the developer checks their code in to Git:
 
@@ -41,7 +41,7 @@ The diagram below shows the flow of the pipeline which starts when the developer
 - gitops: update the GitOps repository with the latest helm release information to trigger [ArgoCD](https://argoproj.github.io/argo-cd/) to deploy the application to the `test` namespace
 
 ## Deploy the Application
-The following steps will deploy the modernized Customer Order Services application in a WebSphere Liberty container to a RedHat OpenShift cluster.
+The following steps will deploy the modernized Customer Order Services application in a WebSphere Liberty container to a Red Hat OpenShift cluster.
 
 ### Prerequisites
 You will need the following:

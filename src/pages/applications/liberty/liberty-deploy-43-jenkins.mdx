@@ -1,6 +1,6 @@
 ---
 title: Modernizing runtimes with Liberty - Deploy using Jenkins on OCP 4.3
-description: This section covers how to deploy the application to RedHat OpenShift 4.3 using a Jenkins automated CI/CD pipeline. The diagram below shows the flow of the pipeline which starts when the developer checks their code in to Git and ends with the application being deployed in Production.
+description: This section covers how to deploy the application to Red Hat OpenShift 4.3 using a Jenkins automated CI/CD pipeline. The diagram below shows the flow of the pipeline which starts when the developer checks their code in to Git and ends with the application being deployed in Production.
 ---
 
 export const Title = () => (
@@ -10,7 +10,7 @@ Modernizing runtimes with Liberty <br/> <h2>Deploy using Jenkins on OCP 4.3</h2>
 );
 
 <PageDescription>
-This section covers how to deploy the application to RedHat OpenShift 4.3 using a Jenkins automated CI/CD pipeline. The diagram below shows the flow of the pipeline which starts when the developer checks their code in to Git and ends with the application being deployed in Production.
+This section covers how to deploy the application to Red Hat OpenShift 4.3 using a Jenkins automated CI/CD pipeline. The diagram below shows the flow of the pipeline which starts when the developer checks their code in to Git and ends with the application being deployed in Production.
 </PageDescription>
 
   ![Pipeline](images/liberty-deploy/overview.jpg)
@@ -29,13 +29,13 @@ This section covers how to deploy the application to RedHat OpenShift 4.3 using 
   12. the `deployment` running in the `prod` project is restarted using the newly created image
 
 ## Deploy the Application
-The following steps will deploy the modernized Customer Order Services application in a WebSphere Liberty container to a RedHat OpenShift cluster.
+The following steps will deploy the modernized Customer Order Services application in a WebSphere Liberty container to a Red Hat OpenShift cluster.
 
 ### Prerequisites
 You will need the following:
 
 - [Git CLI](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-- RedHat OpenShift 4.3 with Cluster Admin permissions
+- Red Hat OpenShift 4.3 with Cluster Admin permissions
 - [oc CLI](https://docs.openshift.com/container-platform/3.11/cli_reference/get_started_cli.html)
 - DB2 Database
 
@@ -71,17 +71,10 @@ If you want to re-run the scripts, please make sure you drop the databases and c
 ### Create the Security Context Constraint
 In order to deploy and run the WebSphere Liberty Docker image in an OpenShift cluster, we first need to configure certain security aspects for the cluster. The `Security Context Constraint` provided [here](https://github.com/ibm-cloud-architecture/appmod-liberty-jenkins/blob/master/Deployment/OpenShift/ssc.yaml) grants the [service account](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/) that the WebSphere Liberty Docker container is running under the required privileges to function correctly.
 
-A **cluster administrator** can use the file provided [here](https://github.com/ibm-cloud-architecture/appmod-liberty-jenkins/blob/master/Deployment/OpenShift/ssc.yaml) with the following command to create the Security Context Constraint (SCC):
-
-```
-cd Deployment/OpenShift
-oc apply -f ssc.yaml
-```
-
 ### Create the projects
-Four RedHat OpenShift projects are required in this scenario:
+Four Red Hat OpenShift projects are required in this scenario:
 
-- Build: this project will contain the Jenkins server and the artifacts used to build the application image  
+- Build: this project will contain the Jenkins server and the artifacts used to build the application image
 - Dev: this is the `development` environment for this application
 - Stage: this is the `staging` environment for this application
 - Prod: this is the `production` environment for this application
@@ -93,21 +86,8 @@ Issue the command shown below to create the projects
 oc create -f liberty-projects.yaml
 ```
 
-### Create a service account
-It is a good Kubernetes practice to create a [service account](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/) for your applications. A service account provides an identity for processes that run in a Pod. In this step we will create a new service account with the name `websphere` in each of the `dev`, `stage` and `prod` projects and add the Security Context Constraint created above to them.
-
-Issue the commands shown below to create the `websphere` service account and bind the ibm-websphere-scc to it in each of the projects:
-```
-oc create serviceaccount websphere -n cos-liberty-dev
-oc create serviceaccount websphere -n cos-liberty-stage
-oc create serviceaccount websphere -n cos-liberty-prod
-oc adm policy add-scc-to-user ibm-websphere-scc -z websphere -n cos-liberty-dev
-oc adm policy add-scc-to-user ibm-websphere-scc -z websphere -n cos-liberty-stage
-oc adm policy add-scc-to-user ibm-websphere-scc -z websphere -n cos-liberty-prod
-```
-
 ### Deploy Jenkins
-Some RedHat OpenShift clusters are configured to automatically provision a Jenkins instance in a build project. The steps below can be used if your cluster is not configured for automatic Jenkins provisioning:
+Some Red Hat OpenShift clusters are configured to automatically provision a Jenkins instance in a build project. The steps below can be used if your cluster is not configured for automatic Jenkins provisioning:
 
 ```
 oc project cos-liberty-build
@@ -126,7 +106,7 @@ oc policy add-role-to-user edit system:serviceaccount:cos-liberty-build:jenkins 
 ```
 
 ### Import the deployment templates
-RedHat OpenShift [templates](https://docs.openshift.com/container-platform/3.11/dev_guide/templates.html) are used to make artifact creation easier and repeatable. The template definition provided [here](https://github.com/ibm-cloud-architecture/appmod-liberty-jenkins/blob/master/Deployment/OpenShift/template-liberty-deploy.yaml) defines a Kubernetes [`Service`](https://kubernetes.io/docs/concepts/services-networking/service/), [`Route`](https://docs.openshift.com/container-platform/3.11/architecture/networking/routes.html) and [`DeploymentConfig`](https://docs.openshift.com/container-platform/3.11/architecture/core_concepts/deployments.html#deployments-and-deployment-configurations) for the CustomerOrderServices application.
+Red Hat OpenShift [templates](https://docs.openshift.com/container-platform/3.11/dev_guide/templates.html) are used to make artifact creation easier and repeatable. The template definition provided [here](https://github.com/ibm-cloud-architecture/appmod-liberty-jenkins/blob/master/Deployment/OpenShift/template-liberty-deploy.yaml) defines a Kubernetes [`Service`](https://kubernetes.io/docs/concepts/services-networking/service/), [`Route`](https://docs.openshift.com/container-platform/3.11/architecture/networking/routes.html) and [`DeploymentConfig`](https://docs.openshift.com/container-platform/3.11/architecture/core_concepts/deployments.html#deployments-and-deployment-configurations) for the CustomerOrderServices application.
 
 The `gse-liberty-deploy` template defines the following:
 
@@ -148,7 +128,7 @@ oc create -f template-liberty-deploy.yaml -n cos-liberty-prod
 ```
 
 ### Create the deployment definitions
-In this step the `gse-liberty-deploy` template will be used to create a RedHat OpenShift [application](https://docs.openshift.com/container-platform/3.11/dev_guide/application_lifecycle/new_app.html) named `cos-liberty` in the `dev`, `stage` and `prod` namespaces.
+In this step the `gse-liberty-deploy` template will be used to create a Red Hat OpenShift [application](https://docs.openshift.com/container-platform/3.11/dev_guide/application_lifecycle/new_app.html) named `cos-liberty` in the `dev`, `stage` and `prod` namespaces.
 
 The result will be:
 
@@ -180,7 +160,7 @@ oc create -f template-liberty-build.yaml -n cos-liberty-build
 ```
 
 ### Create the build definitions
-In this step the `gse-liberty-build` template will be used to create a RedHat OpenShift [application](https://docs.openshift.com/container-platform/3.11/dev_guide/application_lifecycle/new_app.html) named `cos-liberty` in the `build` namespaces.
+In this step the `gse-liberty-build` template will be used to create a Red Hat OpenShift [application](https://docs.openshift.com/container-platform/3.11/dev_guide/application_lifecycle/new_app.html) named `cos-liberty` in the `build` namespaces.
 
 The result will be:
 
@@ -196,7 +176,7 @@ oc new-app gse-liberty-build -p APPLICATION_NAME=cos-liberty -p SOURCE_URL="http
 ```
 
 ### Run the pipeline on OCP 4.3
-The newly created pipeline can be started from the RedHat OpenShift console which allows access to the Jenkins logs but also tracks the progress in the OCP console.
+The newly created pipeline can be started from the Red Hat OpenShift console which allows access to the Jenkins logs but also tracks the progress in the OCP console.
 
 - In the OpenShift Container Platform UI, change to the **Developer** view, select the `cos-liberty-build` project.
 
@@ -245,4 +225,4 @@ Now that the pipeline is complete, validate the Customer Order Services applicat
 - Repeat the validations for the `stage` and `prod` Projects.
 
 ## Review and Next Steps
-In this section you configured a CI/CD pipeline for the CustomerOrderServices application that builds a single immutable image for the latest version of the application and then deploys it to three different environments.  
+In this section you configured a CI/CD pipeline for the CustomerOrderServices application that builds a single immutable image for the latest version of the application and then deploys it to three different environments.

@@ -27,8 +27,8 @@ Modernizing workloads to run on a cloud-native application runtime is key step. 
 ## Run it yourself
 Detailed step-by-step instructions are available to deploy the solution in your environment:
 
-- [Deploy the solution on OCP 4.3 using OpenShift Pipelines (Tekton)](liberty/liberty-deploy-tekton)
-- [Deploy the solution on OCP 4.3 using Jenkins](liberty/liberty-deploy-43-jenkins)
+- [Deploy the solution on OCP 4.3 using Cloud Nativet Toolkit Pipelines](liberty/liberty-deploy-cloud-native-toolkit)
+- [Deploy the solution on OCP 4.3 using OpenShift Pipelines (Tekton)](liberty/liberty-deploy-openshift-pipelines)
 
 ## Introduction
 **Runtime modernization** moves an application to a 'built for the cloud' runtime with the least amount of effort. **WebSphere Liberty** is a fast, dynamic, and easy-to-use Java application server, built on the open source Open Liberty project. Ideal or the cloud, Liberty is a combination of IBM technology and open source software, with fast startup times (<2 seconds), no server restarts to pick up changes, and a simple XML configuration.
@@ -43,7 +43,7 @@ Applications deployed on the WebSphere Liberty container runtime can be build, d
 
   ![Liberty flow](images/libertyflow.jpg)
 
-This repository holds a solution that is the result of a **runtime modernization** for an existing WebSphere Java EE application that was moved from WebSphere ND v8.5.5 to WebSphere Liberty and deployed by the IBM CloudPak for Applications to RedHat OpenShift.
+This repository holds a solution that is the result of a **runtime modernization** for an existing WebSphere Java EE application that was moved from WebSphere ND v8.5.5 to WebSphere Liberty and deployed by the IBM CloudPak for Applications to Red Hat OpenShift.
 
 ## Application Overview
 The **Customer Order Services** application is a simple store-front shopping application, built during the early days of the Web 2.0 movement. Users interact directly with a browser-based interface and manage their cart to submit orders.  This application is built using the traditional [3-Tier Architecture](http://www.tonymarston.net/php-mysql/3-tier-architecture.html) model, with an HTTP server, an application server, and a supporting database.
@@ -116,7 +116,7 @@ InitialContext().lookup("java:app/CustomerOrderServices/ProductSearchServiceImpl
     - [server.env](https://github.com/ibm-cloud-architecture/appmod-liberty-jenkins/blob/master/liberty/server.env)
     - [jvm.options](https://github.com/ibm-cloud-architecture/appmod-liberty-jenkins/blob/master/liberty/jvm.options)
 
-- WebSphere Liberty was configured for application monitoring using Prometheus and the Prometheus JMX Exporter. This was necessary to integrate WebSphere Liberty with the RedHat OpenShift monitoring framework.
+- WebSphere Liberty was configured for application monitoring using Prometheus and the Prometheus JMX Exporter. This was necessary to integrate WebSphere Liberty with the Red Hat OpenShift monitoring framework.
 
 - The `Dockerfile` required to build the **immutable Docker Image** containing the application and WebSphere Liberty was created from the template provided by IBM Cloud Transformation Advisor. The final file for use with Jenkins can be found here:
 
@@ -133,12 +133,43 @@ Detailed, step-by-step instructions on how to replicate these steps are provided
 ### Deploy
 
 <AnchorLinks>
+  <AnchorLink>Deploy using Cloud Native Toolkit Pipelines</AnchorLink>
   <AnchorLink>Deploy using Tekton </AnchorLink>
-  <AnchorLink>Deploy using Jenkins on OCP 4.3</AnchorLink>
 </AnchorLinks>
 
-### Deploy using Tekton
-The [steps](liberty-deploy-tekton) will deploy the modernized Customer Order Services application in a WebSphere Liberty container to a Red Hat OpenShift cluster using **OpenShift Pipelines**.
+### Deploy using Cloud Native Toolkit Pipelines
+IBM Cloud-Native Toolkit is an open-source collection of assets that provide an environment for developing cloud-native applications for deployment within Red Hat OpenShift and Kubernetes. It embodies IBM Garage Method principles and practices for consistently developed applications, incorporating best practices that increase developer velocity for efficient delivery of business value.
+
+The [steps](liberty/liberty-deploy-cloud-native-toolkit) will deploy the modernized Customer Order Services application in a WebSphere Liberty container to a Red Hat OpenShift cluster using the pipelines provided by the **Cloud Native Toolkit**.
+
+The diagram below shows the following flow:
+
+  ![Pipeline](images/liberty-deploy/toolkit-pipeline1.jpg)
+
+- test: the application code is compiled and unit tests are executed using [Maven](https://maven.apache.org/) before the static code is analyzed for quality using [SonarQube](https://www.sonarqube.org/).
+
+- build: the container image for the application is created using [buildah](https://buildah.io) and pushed to the Image Registry in the local OpenShift cluster
+
+- trivy-scan: the container image in the local Image Registry is scanned for vulnerabilities using [Trivy](https://github.com/aquasecurity/trivy)
+
+- deploy: deploy the application to the `dev` namespace
+
+- health-check: validate the the application is functioning correctly in the `dev` namespace. Automated testing may occur at this step but is out of the scope of this solution.
+
+- tag-release: create a new 'release' for the application in the Git repository
+
+- img-release: tag and push the container image to the central Image Repository
+
+- scan: scan the container image in the central Image Registry using [IBM Vulnerability Advisor](https://cloud.ibm.com/apidocs/container-registry/va)
+
+- helm-release: package a helm release for the application and load it in to the central Artifact Repository [Artifactory](https://jfrog.com/artifactory)
+
+- gitops: update the GitOps repository with the latest helm release information to trigger [ArgoCD](https://argoproj.github.io/argo-cd/) to deploy the application to the `test` namespace
+
+Detailed, step-by-step instructions on how to replicate these steps are provided [here](liberty/liberty-deploy-cloud-native-toolkit)
+
+### Deploy using OpenShift Pipelines
+The [steps](liberty/liberty-deploy-openshift-pipelines) will deploy the modernized Customer Order Services application in a WebSphere Liberty container to a Red Hat OpenShift cluster using **OpenShift Pipelines**.
 
 The diagram below shows the following flow:
 
@@ -152,39 +183,7 @@ The diagram below shows the following flow:
 
   ![Pipeline](images/tekton-flow.jpg)
 
-Detailed, step-by-step instructions on how to replicate these steps are provided [here](liberty-deploy-tekton)
-
-### Deploy using Jenkins on OCP 4.3
-The [steps](liberty-deploy-43-jenkins) describe the process to create the Jenkins, Kubernetes and RedHat OpenShift artifacts required to automate the build and deployment pipeline for the application. For illustration purposes, the application was deployed to three different RedHat OpenShift projects to simulate `development`, `staging` and `production`. The diagram below shows the flow through the pipeline.
-
-
-- 1) the developer checks their code in to `git`
-
-- 2) a `webhook` automatically triggers the Jenkins Pipeline in the RHOS cluster
-
-- 3) the pipeline checks out the code from `git` and uses `maven` to build and test the application
-
-- 4) the `oc start build` command is used to build a `docker` image for the application
-
-- 5) the image is added to the `ImageStream` and pushed to the `docker registry` in the RHOS cluster
-
-- 6) the image is then `tagged` for the `dev` project
-
-- 7) the `deployment` running in the `dev` project is restarted using the newly created image
-
-- 8) the image is then `tagged` for the `stage` project
-
-- 9) the `deployment` running in the `stage` project is restarted using the newly created image
-
-- 10) the developer is prompted to `approve` the deployment to production
-
-- 11) the image is then `tagged` for the `prod` project
-
-- 12) the `deployment` running in the `prod` project is restarted using the newly created image
-
-  ![Pipeline](images/liberty-deploy/overview.jpg)
-
-Detailed, step-by-step instructions on how to replicate these steps are provided [here](liberty-deploy-43-jenkins)
+Detailed, step-by-step instructions on how to replicate these steps are provided [here](liberty/liberty-deploy-openshift-pipelines)
 
 ## Summary
 This application has been modified from the initial [WebSphere ND v8.5.5 version](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/was855) to run on WebSphere Liberty and deployed by the IBM CloudPak for Applications.
