@@ -1,6 +1,6 @@
 ---
 title: Modernizing runtimes with Liberty - Deploy using Tekton (OpenShift Pipelines) and ArgoCD on OCP 4.3
-description: This section covers how to deploy the application to RedHat OpenShift 4.3 using a Tekton (OpenShift Pipelines) CI pipeline and ArgoCD. The diagram below shows the flow of the pipeline which starts when the developer checks their code in to Git and ends with the application being deployed in build and dev namespaces.
+description: This section covers how to deploy the application to Red Hat OpenShift 4.3 using a Tekton (OpenShift Pipelines) CI pipeline and ArgoCD. The diagram below shows the flow of the pipeline which starts when the developer checks their code in to Git and ends with the application being deployed in build and dev namespaces.
 ---
 export const Title = () => (
   <span>
@@ -10,7 +10,7 @@ Modernizing runtimes with Liberty <br/> <h2>Deploy using Tekton (OpenShift Pipel
 
 
 <PageDescription>
-This section covers how to deploy the application to RedHat OpenShift 4.3 using a Tekton (OpenShift Pipelines) CI pipeline and ArgoCD. The diagram below shows the flow of the pipeline which starts when the developer checks their code in to Git and ends with the application being deployed in build and dev namespaces.
+This section covers how to deploy the application to Red Hat OpenShift 4.3 using a Tekton (OpenShift Pipelines) CI pipeline and ArgoCD. The diagram below shows the flow of the pipeline which starts when the developer checks their code in to Git and ends with the application being deployed in build and dev namespaces.
 </PageDescription>
 
 The diagram below shows the following flow:
@@ -135,7 +135,7 @@ metadata:
     tekton.dev/git-0: https://github.com # Described below
 type: kubernetes.io/basic-auth
 stringData:
-  username: xxxxx  
+  username: xxxxx
   password: xxxxx
 ```
 
@@ -317,4 +317,4 @@ Now that the pipeline is complete, validate the Customer Order Services applicat
 - Log in to the application with `username: rbarcia` and `password: bl0wfish`
 
 ## Review and Next Steps
-In this section you configured a CI/CD pipeline for the CustomerOrderServices application that builds a single immutable image for the latest version of the application and then deploys it to a dev environment.  
+In this section you configured a CI/CD pipeline for the CustomerOrderServices application that builds a single immutable image for the latest version of the application and then deploys it to a dev environment.
