@@ -11,6 +11,20 @@ Modernizing runtimes with Liberty <br/> <h2>Deploy using OpenShift Pipelines on 
 
 <PageDescription>
 
+## Summary
+<AnchorLinks small>
+  <AnchorLink>Overview</AnchorLink>
+  <AnchorLink>Prerequisites</AnchorLink>
+  <AnchorLink>Getting the project repository</AnchorLink>
+  <AnchorLink>Create application database</AnchorLink>
+  <AnchorLink>Create the build project</AnchorLink>
+  <AnchorLink>Import the Tekton resources</AnchorLink>
+  <AnchorLink>Run the pipeline</AnchorLink>
+  <AnchorLink>View the pipeline logs</AnchorLink>
+  <AnchorLink>Validate the application</AnchorLink>
+</AnchorLinks>
+
+## Overview
 This section covers how to deploy the application to Red Hat OpenShift 4.3+ using a OpenShift Pipelines CI/CD pipeline. The diagram below shows the flow of the pipeline which starts when the developer checks their code in to Git and ends with the application being deployed in a build namespace.
 </PageDescription>
 
@@ -49,7 +63,7 @@ git clone https://github.com/ibm-cloud-architecture/appmod-liberty-tekton.git
 cd appmod-liberty-tekton
 ```
 
-### Create application database infrastructure
+### Create application database
 As said in the prerequisites section above, the Customer Order Services application uses uses DB2 as its database.
 
 If you want to use a pre-configured DB2 database in a container in OpenShift, use the instructions provided [here](db2)

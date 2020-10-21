@@ -14,6 +14,24 @@ Modernizing runtimes with Liberty <br/> <h2>Deploy using Cloud Native Toolkit Pi
 This section covers how to deploy the CustomerOrderServices application to Red Hat OpenShift using the pipelines provided by the [Cloud Native Toolkit](https://cloudnativetoolkit.dev)
 </PageDescription>
 
+## Summary
+This section has the following steps:
+
+<AnchorLinks small>
+  <AnchorLink>Cloud Native Toolkit pipelines</AnchorLink>
+  <AnchorLink>Prerequisites</AnchorLink>
+  <AnchorLink>Create application database</AnchorLink>
+  <AnchorLink>Create the application in Git</AnchorLink>
+  <AnchorLink>Clone the application code locally</AnchorLink>
+  <AnchorLink>Configure the application namespace</AnchorLink>
+  <AnchorLink>Register the application with the Toolkit pipeline</AnchorLink>
+  <AnchorLink>Execute the Toolkit pipeline</AnchorLink>
+  <AnchorLink>Review the Sonar Scan for the application</AnchorLink>
+  <AnchorLink>Validate the application</AnchorLink>
+  <AnchorLink>Review and Next Steps</AnchorLink>
+</AnchorLinks>
+
+## Cloud Native Toolkit pipelines
 [Cloud Native Toolkit](https://cloudnativetoolkit.dev) is an open-source collection of assets that provide an environment for developing cloud-native applications for deployment within Red Hat OpenShift and Kubernetes. It embodies IBM Garage Method principles and practices for consistently developed applications, incorporating best practices that increase developer velocity for efficient delivery of business value.
 
 The diagram below shows the flow of the pipeline which starts when the developer checks their code in to Git:
@@ -54,7 +72,7 @@ You will need the following:
 - [oc CLI](https://docs.openshift.com/container-platform/3.11/cli_reference/get_started_cli.html)
 - DB2 Database
 
-### Create application database infrastructure
+### Create application database
 As said in the prerequisites section above, the Customer Order Services application uses uses DB2 as its database.
 
 If you want to use a pre-configured DB2 database in a container in OpenShift, use the instructions provided [here](db2)
@@ -111,7 +129,7 @@ cd <REPO_NAME>
 
   ![template](images/liberty-deploy/toolkit-pipeline-3.jpg)
 
-### Set the namespace context
+### Configure the application namespace
 Create a new OpenShift project for the `dev` namespace using the following steps
 
 - Issue the following command to new OpenShift `project` and configure it with the required `Service Accounts`, `Config Maps` and `Secrets`
