@@ -17,6 +17,8 @@
       path: /applications/liberty/liberty-deploy-cloud-native-toolkit
     - title: Deploy with OpenShift Pipelines
       path: /applications/liberty/liberty-deploy-openshift-pipelines
+    - title: Deploy pre-configured DB2
+      path: /applications/liberty/db2
     - title: Managing session state
       path: /applications/liberty/liberty-sessions
 - title: Spring Modernization

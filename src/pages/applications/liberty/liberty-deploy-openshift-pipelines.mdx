@@ -50,7 +50,11 @@ cd appmod-liberty-tekton
 ```
 
 ### Create application database infrastructure
-As said in the prerequisites section above, the Customer Order Services application uses uses DB2 as its database. Follow these steps to create the appropriate database, tables and data the application needs to:
+As said in the prerequisites section above, the Customer Order Services application uses uses DB2 as its database.
+
+If you want to use a pre-configured DB2 database in a container in OpenShift, use the instructions provided [here](db2)
+
+Alternatively, if you have a DB2 server that you want to use, follow these steps to create the appropriate database, tables and data the application needs to:
 
 - Copy the createOrderDB.sql and initialDataSet.sql files you can find in the Common directory of this repository over to the db2 host machine (or git clone the repository) in order to execute them later.
 
@@ -82,7 +86,7 @@ oc new-project cos-liberty-tekton
 Import the Tekton `Tasks`, `Pipeline` and `PipelineResources` in to the project using the commands shown below:
 
 ```
-cd ../../tekton/tekton-only
+cd tekton/tekton-only
 oc apply -f gse-apply-manifests-pvc-task.yaml
 oc apply -f gse-buildah-pvc-task.yaml
 oc apply -f gse-build-deploy-pvc-pipeline.yaml

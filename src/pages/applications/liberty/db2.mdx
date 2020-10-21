@@ -1,0 +1,49 @@
+---
+title: Deploy a DB2 container with the ORDER database
+description: This section covers how to deploy a DB2 container with the ORDER database
+---
+
+export const Title = () => (
+  <span>
+Modernizing runtimes with Liberty <br/> <h2>Deploy DB2 container with ORDER database</h2>
+  </span>
+);
+
+<PageDescription>
+
+Configure the ORDER database required for the CustomerOrderResource application.
+</PageDescription>
+
+This section covers how to deploy a DB2 container to Red Hat OpenShift that has been pre-configured with the ORDER database required for the CustomerOrderResource application.
+
+## Clone a repository (if you haven't already...)
+- Issue the following command to clone the repository that contains the required files
+
+```
+git clone https://github.com/ibm-cloud-architecture/appmod-liberty-toolkit
+```
+
+## Navigate to the DB2 folder
+- The `yaml` files for the `Deployment` and `Service` are in the `db2` folder of the repository
+
+```
+cd appmod-liberty-toolkit
+
+cd db2
+```
+
+## Deploy the DB2 image to OpenShift
+- Issue the following commands to create a `namespace`, `service account`, `deploymentconfig` and `service`:
+
+```
+oc create ns db2
+oc project db2
+oc create serviceaccount mysvcacct -n db2
+oc adm policy add-scc-to-user privileged system:serviceaccount:db2:mysvcacct
+oc apply -f db2-dc.yaml
+oc apply -f db2-service.yaml
+```
+
+The DB2 database will take a few minutes to start and will then be accessible in the Cluster at `db2.db2.svc:50000`
+
+- If you want to expose the database outside of the cluster, use the `db2-nodeport.yaml` file
