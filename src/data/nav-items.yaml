@@ -5,7 +5,7 @@
   pages:
     - title: Introduction
       path: /applications/
-- title: Modernizing using Liberty
+- title: Runtime Modernization
   pages:
     - title: Introduction
       path: /applications/liberty
@@ -13,12 +13,12 @@
       path: /applications/liberty/liberty-analyze
     - title: Build
       path: /applications/liberty/liberty-build
-    - title: Deploy using Tekton
-      path: /applications/liberty/liberty-deploy-tekton
-    - title: Deploy using Jenkins
-      path: /applications/liberty/liberty-deploy-43-jenkins
-    - title: Installing OpenShift Pipelines
-      path: /applications/liberty/OpenShiftPipelinesInstall
+    - title: Deploy with Cloud Native Toolkit
+      path: /applications/liberty/liberty-deploy-cloud-native-toolkit
+    - title: Deploy with OpenShift Pipelines
+      path: /applications/liberty/liberty-deploy-openshift-pipelines
+    - title: Deploy pre-configured DB2
+      path: /applications/liberty/db2
     - title: Managing session state
       path: /applications/liberty/liberty-sessions
 - title: Spring Modernization
@@ -27,7 +27,7 @@
       path: /applications/spring/README
     - title: Build
       path: /applications/spring/spring-build
-- title: Operational Modernizing
+- title: Operational Modernization
   pages:
     - title: Introduction
       path: /applications/was90/README
