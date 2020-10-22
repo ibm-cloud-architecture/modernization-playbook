@@ -43,21 +43,6 @@ The diagram below shows the high level decision flow where IBM Cloud Transformat
 
 This repository holds a solution that is the result of a **operational modernization** for an existing WebSphere Java EE application that was moved from WebSphere ND v8.5.5 to the traditional WebSphere Base v9 container and is deployed by the IBM CloudPak for Applications to Red Hat OpenShift.
 
-- [Deploy the Application](#deploy-the-application)
-  - [Getting the project repository](#getting-the-project-repository)
-  - [Create the Security Context Constraint](#create-the-security-context-constraint)
-  - [Create the projects](#create-the-projects)
-  - [Create a service account](#create-a-service-account)
-  - [Deploy Jenkins](#deploy-jenkins)
-  - [Update the Jenkins service account](update-the-jenkins-service-account)
-  - [Import the deployment templates](#import-the-deployment-templates)
-  - [Create the deployment definitions](#create-the-deployment-definitions)
-  - [Import the build templates](#import-the-build-templates)
-  - [Create the build definitions](#create-the-build-definitions)
-  - [Run the pipeline](#run-the-pipeline)
-- [Validate the Application](#validate-the-application)
-- [Summary](#summary)
-
 ## Application Overview
 The **Customer Order Services** application is a simple store-front shopping application, built during the early days of the Web 2.0 movement. Users interact directly with a browser-based interface and manage their cart to submit orders.  This application is built using the traditional [3-Tier Architecture](http://www.tonymarston.net/php-mysql/3-tier-architecture.html) model, with an HTTP server, an application server, and a supporting database.
 
@@ -99,265 +84,26 @@ Detailed, step-by-step instructions on how to replicate these steps are provided
 ### Build
 The **build** phase created the traditional WebSphere container configuration artifacts. The steps were:
 
-1. Update the existing `wsadmin` scripts that currently configure the runtime environment to configure the JPA 2.0 and JAXRS 1.1 engines. The final versions of the file can be found here:
+1. Update the generated scripts that configure the runtime environment to configure the JPA 2.0 and JAXRS 1.1 engines. The final versions of the configuration script can be found here:
 
-- [cosConfig.py](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/tWAS/cosConfig.py)
+- [cosConfig.py](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/src/config/server_config.py)
 
-2. The `Dockerfile` required to build the **immutable Docker Image** containing the application and traditional WebSphere was created. The final file can be found here:
-
-- [Dockerfile](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/Dockerfile)
-
-3. The containerized application was tested locally before the code and configuration files were committed to the **git** repository
+1. The containerized application was tested locally before the code and configuration files were committed to the **git** repository
 
 Detailed, step-by-step instructions on how to replicate these steps are provided [here](tWAS-build)
 
 ### Deploy
-The **deploy** phase created the Jenkins, Kubernetes and Red Hat OpenShift artifacts required to automate the build and deployment pipeline for the application. For illustration purposes, the application was deployed to three different Red Hat OpenShift projects to simulate `development`, `staging` and `production`. The diagram below shows the flow through the pipeline. A more detailed description can be found [here]((tWAS-deploy.md))
-
-  ![Pipeline](images/tWAS-deploy/overview.jpg)
+The **deploy** phase created the OpenShift Pipelines using Tekton to deploy the application.  The pipeline builds the container and then deploys the deployment, service and route for the application.
 
 The steps were:
 
-1. Configure the Red Hat OpenShift Cluster for WebSphere by creating the necessary `SecurityContextConstraints` definition. The file can be found here:
-    - [scc.yaml](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/Deployment/OpenShift/ssc.yaml)
+1. Define the Tekton pipeline to create th `Tasks`, `Pipeline` and `PipelineResources`.
 
-2. Create the Red Hat OpenShift **build template** that would be used to define the Red Hat OpenShift artifacts related to the build process including `ImageStream` and `BuildConfig` definitions. The file can be found here:
-    - [template-twas-build.yaml](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/Deployment/OpenShift/template-twas-build.yaml)
+1. Run the pipeline manually to create the first deployment.  Eventually, the pipeline will be triggered by a webhook on each new git commit.
 
-3. Create the Red Hat OpenShift **deployment template** that would be used to define the Red Hat OpenShift artifacts related to the Customer Order Services application including `DeploymentConfig`, `Service` and `Route` definitions. The file can be found here:
-    - [template-twas-deploy.yaml](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/Deployment/OpenShift/template-twas-deploy.yaml)
-
-4. Create the Jenkins `Jenkinsfile` for the pipeline. The Jenkinsfile defines the steps that the pipeline takes to build the Customer Order Services application EAR file, create an immutable Docker Image and then move the image through the `dev`, `stage` and `prod` environments. The file can be found here:
-    - [Jenkinsfile](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/Jenkinsfile)
-
-5. Create the `build` project, load the **build template** and configure **Jenkins**
-
-6. Create the `dev`, `stage` and `prod` projects and load the **deployment template**
-
-7. Verify the pipeline.
+1. Verify the pipeline. View the logs and access the application to confirm the deployment was succesful.
 
 Detailed, step-by-step instructions on how to replicate these steps are provided [here](tWAS-deploy.md)
-
-## Deploy the Application
-The following steps will deploy the modernized Customer Order Services application in a traditional WebSphere container to a Red Hat OpenShift cluster.
-
-### Prerequisites
-You will need the following:
-
-- [Git CLI](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-- Red Hat OpenShift 3.11 with Cluster Admin permissions
-- [oc CLI](https://docs.openshift.com/container-platform/3.11/cli_reference/get_started_cli.html)
-- DB2 Database
-
-### Getting the project repository
-You can clone the repository from its main GitHub repository page and checkout the appropriate branch for this version of the application.
-
-```
-git clone https://github.com/ibm-cloud-architecture/cloudpak-for-applications.git
-cd cloudpak-for-applications
-git checkout was90
-```
-
-### Create application database infrastructure
-As said in the prerequisites section above, the Customer Order Services application uses uses DB2 as its database. Follow these steps to create the appropriate database, tables and data the application needs to:
-
-1. Copy the createOrderDB.sql and initialDataSet.sql files you can find in the Common directory of this repository over to the db2 host machine (or git clone the repository) in order to execute them later.
-
-2. Ssh into the db2 host
-
-3. Change to the db2 instance user: `su {database_instance_name}``
-
-4. Start db2: `db2start`
-
-4. Create the ORDERDB database: `db2 create database ORDERDB`
-
-5. Connect to the ORDERDB database: `db2 connect to ORDERDB`
-
-6. Execute the createOrderDB.sql script you copied over in step 1 in order to create the appropriate tables, relationships, primary keys, etc: `db2 -tf createOrderDB.sql`
-
-7. Execute the initialDataSet.sql script you copied over in step 1 to populate the ORDERDB database with the needed initial data set: `db2 -tf initialDataSet.sql`
-
-If you want to re-run the scripts, please make sure you drop the databases and create them again.
-
-### Create the Security Context Constraint
-In order to deploy and run the WebSphere Base Docker image in an OpenShift cluster, we first need to configure certain security aspects for the cluster. The `Security Context Constraint` provided [here](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/Deployment/OpenShift/ssc.yaml) grants the [service account](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/) that the WebSphere Base Docker container is running under the required privileges to function correctly.
-
-A **cluster administrator** can use the file provided [here](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/Deployment/OpenShift/ssc.yaml) with the following command to create the Security Context Constraint (SCC):
-
-```
-cd Deployment/OpenShift
-oc apply -f ssc.yaml
-```
-
-### Create the projects
-Four Red Hat OpenShift projects are required in this scenario:
-- Build: this project will contain the Jenkins server and the artifacts used to build the application image  
-- Dev: this is the `development` environment for this application
-- Stage: this is the `staging` environment for this application
-- Prod: this is the `production` environment for this application
-
-The file provided [here](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/Deployment/OpenShift/twas-projects.yaml) contains the definitions for the four projects in a single file to make creation easier
-
-Issue the command shown below to create the projects
-```
-oc create -f liberty-projects.yaml
-```
-
-### Create a service account
-It is a good Kubernetes practice to create a [service account](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/) for your applications. A service account provides an identity for processes that run in a Pod. In this step we will create a new service account with the name `websphere` in each of the `dev`, `stage` and `prod` projects and add the Security Context Constraint created above to them.
-
-Issue the commands shown below to create the `websphere` service account and bind the ibm-websphere-scc to it in each of the projects:
-
-```
-oc create serviceaccount websphere -n cos-twas-dev
-oc create serviceaccount websphere -n cos-twas-stage
-oc create serviceaccount websphere -n cos-twas-prod
-oc adm policy add-scc-to-user ibm-websphere-scc -z websphere -n cos-twas-dev
-oc adm policy add-scc-to-user ibm-websphere-scc -z websphere -n cos-twas-stage
-oc adm policy add-scc-to-user ibm-websphere-scc -z websphere -n cos-twas-prod
-```
-
-### Deploy Jenkins
-Some Red Hat OpenShift clusters are configured to automatically provision a Jenkins instance in a build project. The steps below can be used if your cluster is not configured for automatic Jenkins provisioning:
-
-```
-oc project cos-liberty-build
-oc new-app jenkins-persistent
-```
-
-## Update the Jenkins service account
-During provisioning of the Jenkins master a service account with the name `jenkins` is created. This service account has privileges to create new artifacts only in the project that it is running in. In this scenario Jenkins will need to create artifacts in the `dev`, `stage` and `prod` projects.
-
-Issue the commands below to allow the `jenkins` service account to `edit` artifacts in the `dev`, `stage` and `prod` projects.
-
-```
-oc policy add-role-to-user edit system:serviceaccount:cos-twas-build:jenkins -n cos-twas-dev
-oc policy add-role-to-user edit system:serviceaccount:cos-twas-build:jenkins -n cos-twas-stage
-oc policy add-role-to-user edit system:serviceaccount:cos-twas-build:jenkins -n cos-twas-prod
-```
-
-### Import the deployment templates
-Red Hat OpenShift [templates](https://docs.openshift.com/container-platform/3.11/dev_guide/templates.html) are used to make artifact creation easier and repeatable. The template definition provided [here](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/liberty/Deployment/OpenShift/template-liberty-deploy.yaml) defines a Kubernetes [`Service`](https://kubernetes.io/docs/concepts/services-networking/service/), [`Route`](https://docs.openshift.com/container-platform/3.11/architecture/networking/routes.html) and [`DeploymentConfig`](https://docs.openshift.com/container-platform/3.11/architecture/core_concepts/deployments.html#deployments-and-deployment-configurations) for the CustomerOrderServices application.
-
-The `gse-twas-deploy` template defines the following:
-- `service` listening on ports `9080`, `9443` and `9082`
-- `route` to expose the `9443` port externally
-- `DeploymentConfig` to host the WebSphere Base container.
-  - The `image` for the container is taken from the [`ImageStream`](https://docs.openshift.com/container-platform/3.11/dev_guide/managing_images.html) that will be populated by the Jenkins pipeline.
-  - `environment variables` are defined for the DB2 database used by the application allowing for environment specific information to be injected
-  - [Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/) for `liveness` and `readiness` are defined to check port 9443 is active
-  - The `securityContext` is set to allow read/write access to the filesystem and to run the container as `user 1001`
-  - The deployment will be updated if a new image is loaded to the `ImageStream` or if a change to the configuration is detected.
-
-Issue the commands below to load the template named `gse-twas-deploy` in the `dev`, `stage` and `prod` projects.
-
-```
-oc create -f template-twas-deploy.yaml -n cos-twas-dev
-oc create -f template-twas-deploy.yaml -n cos-twas-stage
-oc create -f template-twas-deploy.yaml -n cos-twas-prod
-```
-
-### Create the deployment definitions
-In this step the `gse-twas-deploy` template will be used to create a Red Hat OpenShift [application](https://docs.openshift.com/container-platform/3.11/dev_guide/application_lifecycle/new_app.html) named `cos-twas` in the `dev`, `stage` and `prod` namespaces.
-
-The result will be:
-- `service` listening on ports `9080`, `9443` and `9082`
-- `route` to expose the `9443` port externally
-- `DeploymentConfig` to host the WebSphere Base container. The deployment config will wait for a `docker image` to be loaded in to the `ImageStream` by the Jenkins pipeline.
-
-Issue the following commands to create the applications from the template:
-
-```
-oc new-app gse-twas-deploy -p APPLICATION_NAME=cos-twas -n cos-twas-dev
-oc new-app gse-twas-deploy -p APPLICATION_NAME=cos-twas -n cos-twas-stage
-oc new-app gse-twas-deploy -p APPLICATION_NAME=cos-twas -n cos-twas-prod
-```
-
-### Import the build templates
-In this step a template for the `build` process will be loaded in to the `build` project. The template provided [here](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/blob/was90/Deployment/OpenShift/template-twas-build.yaml) defines the following artifacts:
-
-- An [ImageStream](https://docs.openshift.com/container-platform/3.11/dev_guide/managing_images.html) for the application image. This will be populated by the Jenkins Pipeline
-- An ImageStream for WebSphere Base which will pull down the latest version of the `ibmcom/websphere-traditional:latest-ubi` image and will monitor DockerHub for any updates.
-- A `binary` [BuildConfig](https://docs.openshift.com/container-platform/3.11/dev_guide/builds/build_strategies.html) that will be used by the Jenkins Pipeline to build the application Docker image
-- A `jenkinsfile` BuildConfig that defines the `Pipeline` using the `Jenkinsfile` in GitHub
-- Parameters to allow the WebSphere Base image and GitHub repository to be provided when the template is instantiated
-
-Issue the commands below to load the template named `gse-twas-build` in the `build` projects.
-
-```
-oc create -f template-twas-build.yaml -n cos-twas-build
-```
-
-### Create the build definitions
-In this step the `gse-twas-build` template will be used to create a Red Hat OpenShift [application](https://docs.openshift.com/container-platform/3.11/dev_guide/application_lifecycle/new_app.html) named `cos-twas` in the `build` namespaces.
-
-The result will be:
-- An [ImageStream](https://docs.openshift.com/container-platform/3.11/dev_guide/managing_images.html) for the application image. This will be populated by the Jenkins Pipeline
-- An ImageStream for WebSphere Base which will pull down the latest version of the `ibmcom/websphere-traditional:latest-ubi` image and will monitor DockerHub for any updates.
-- A `binary` [BuildConfig](https://docs.openshift.com/container-platform/3.11/dev_guide/builds/build_strategies.html) that will be used by the Jenkins Pipeline to build the application Docker image
-- A `jenkinsfile` BuildConfig that defines the `Pipeline` using the `Jenkinsfile` in GitHub (with the URL provided as a parameter when the application is created)
-
-Issue the following commands to create the application from the template:
-
-```
-oc new-app gse-twas-build -p APPLICATION_NAME=cos-twas -p SOURCE_URL="https://github.com/ibm-cloud-architecture/cloudpak-for-applications" -n cos-twas-build
-```
-
-### Run the pipeline  
-The newly created pipeline can be started from the Red Hat OpenShift console which allows access to the Jenkins logs but also tracks the progress in the OCP console.
-
-1. Navigate to **Application Console --> Customer Order Services on twas - Build --> Builds --> Pipelines** and click the **Start Pipeline** button
-
-  ![Run Pipeline](images/tWAS-deploy/run-pipeline.jpg)
-
-2. When the pipeline starts, click the `view log` link to go to the Jenkins administration console. Note that it may take a couple of minutes before the `view log` link appears on the first pipeline build
-
-  ![View Log](images/tWAS-deploy/view-log.jpg)
-
-3. When prompted, log in with your OpenShift account and grant the required access permissions. The Jenkins console log will be displayed as shown below:
-
-  ![Jenkins Log](images/tWAS-deploy/jenkins-log.jpg)
-
-4. Return to the OpenShift Console and track the progress of the pipeline
-
-  ![Running](images/tWAS-deploy/pipeline-running.jpg)
-
-5. The pipeline will eventually stop at the **Promotion Gate** for approval to deploy to Production. Click the **Input Required** link as shown below
-
-  ![Gate](images/tWAS-deploy/gate.jpg)
-
-6. When the *Promote application to Production* question is displayed, click **Proceed**
-
-  ![Promote](images/tWAS-deploy/promote.jpg)
-
-7. Return to the OpenShift Console and validate that the pipeline is now complete
-
-  ![Complete](images/tWAS-deploy/complete.jpg)
-
-## Validate the Application
-Now that the pipeline is complete, validate the Customer Order Services application is deployed and running in `dev`, `stage` and `prod`
-
-Now that the pipeline is complete, validate the Customer Order Services application is deployed and running in `dev`, `stage` and `prod`
-
-1. In the OpenShift Console, navigate to **Application Console --> Customer Order Services on twas - Dev --> Applications --> Deployments** and click on the link in the **Latest Version** column
-
-  ![Deployment](images/tWAS-deploy/deployment.jpg)
-
-2. Information about the deployment will be displayed including the **image** that is being used (note the **tag** on the image as it will be the same in the `stage` and `prod` deployments). After a few minutes the container will be marked as **ready**
-
-  ![Pods](images/tWAS-deploy/pods.jpg)
-
-3. Click **Applications --> Routes** and click on the **route** for the application. Note that the URL is < application_name >-< project_name >.< ocp cluster url >. In this case the project name is `cos-twas-dev`
-
-  ![Route](images/tWAS-deploy/route.jpg)
-
-4. Add `/CustomerOrderServicesWeb` to the end of the URL in the browser to access the application
-
-  ![Dev Running](images/tWAS-deploy/dev-running.jpg)
-
-5. Log in to the application with `username: rbarcia` and `password: bl0wfish`
-
-6. Repeat the validations for the `stage` and `prod` Projects.
 
 ## Summary
 This application has been modified from the initial [WebSphere ND v8.5.5 version](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/was855) to run on traditional WebSphere and deployed by the IBM CloudPak for Applications.

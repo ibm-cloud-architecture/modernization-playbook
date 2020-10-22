@@ -35,8 +35,6 @@
       path: /applications/was90/tWAS-analyze
     - title: Build
       path: /applications/was90/tWAS-build
-    - title: Build with WCMT4IC
-      path: /applications/was90/tWAS-build-WCMT4IC
     - title: Deploy
       path: /applications/was90/tWAS-deploy
 - title: Integration Modernization
