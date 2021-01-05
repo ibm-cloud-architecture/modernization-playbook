@@ -5,6 +5,9 @@
   pages:
     - title: Introduction
       path: /applications/
+    - title: Getting Started with IBM Mono2Micro
+      path: /applications/m2m
+    
 - title: Runtime Modernization
   pages:
     - title: Introduction
