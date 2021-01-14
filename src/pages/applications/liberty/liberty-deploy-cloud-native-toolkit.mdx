@@ -159,65 +159,15 @@ oc pipeline
 
 - When prompted to **Select the Pipeline to use in the PipelineRun**, select `ibm-appmod-liberty`
 
-- When asked if you would **like to enable the pipeline to scan the image for vulnerabilities**, enter `Y`
+- When prompted **? scan-image: Enable the pipeline to scan the image for vulnerabilities? (Y/n)**, enter `Y`
 
   ![template](images/liberty-deploy/toolkit-pipeline-4.jpg)
 
+- When prompted **? health-endpoint: Endpoint to check health after deployment, liberty uses / not /health? (/)**, press enter
+
+- When promoted **? java-bin-path: The path to the java binaries. The default value is "target"? (target)**, enter `CustomerOrderServicesApp/target`
+
 The result will be a specialized `tekton pipeline` for Liberty applications that has been configured with a **WebHook** from your `GitHub repository`.
-
-### Verify that the pipeline failed to complete successfully
-An instance of the pipeline was executed at the completion of the pipeline configuration in the previous step. This `pipeline run` failed as the pipeline needs to be configured for the CustomerOrderServices application.
-
-- In the **OpenShift Container Platform UI**, select the `cos-with-toolkit-dev` project and navigate to **Pipelines --> Pipeline Runs**
-
-  ![template](images/liberty-deploy/toolkit-pipeline-5.jpg)
-
-- Click on the **name** of the failed Pipeline Run, select the **Logs** tab and scroll down in the log until you find the `ERROR: Error during SonarScanner execution` line as shown below
-
-  ![template](images/liberty-deploy/toolkit-pipeline-6.jpg)
-
-This error occured because the pipeline default is to expect the compiled application to be in the `/target` folder but in the case of CustomerOrderServices, the compiled application code is inthe `/CustomerOrderServicesApp/target` folder. You will fix this in the next step
-
-### Modify the Toolkit pipeline
-- In the **OpenShift Container Platform UI**, navigate to **Pipelines --> Pipelines**
-
-- Click on the **name** of the `cos-with-toolkit` Pipeline, select the **YAML** tab and scroll down to the `-name: test` line at approximately line 70 as shown below:
-
-  ![template](images/liberty-deploy/toolkit-pipeline-7a.jpg)
-
-- At the **end** of the **params** section add the two lines below:
-```
-- name: sonarqube-java-bin-path
-  value: CustomerOrderServicesApp/target
-```
-
-Ensure that the indentation is as shown below:
-  ![template](images/liberty-deploy/toolkit-pipeline-7.jpg)
-
-- Click **Save**
-
-### Execute the Toolkit pipeline
-- In the **OpenShift Container Platform UI**, navigate to **Pipelines --> Pipelines Runs**
-
-
-- Use the right-side menu to **re-run** the previous `PipelineRun`
-  ![template](images/liberty-deploy/toolkit-pipeline-8.jpg)
-
-
-- Click on the newly created `PipelineRun` instance and select the **Logs** tab to follow the progress of the Pipeline. It will take a while to complete.
-  ![template](images/liberty-deploy/toolkit-pipeline-9.jpg)
-
-
-- In the logs view, click on the `trivy-scan` task and review the results of the Vulnerability scan performed by the IBM Vulnerability Advisor. Note that this step would have failed if any issues had been detected
-  ![template](images/liberty-deploy/toolkit-pipeline-10.jpg)
-
-
-- In the view, click on the `health` task and review the results of the health check that was executed against the application before proceeding to the release stage. Note that this step would have failed if the `health` endpoint for the application returned an error
-  ![template](images/liberty-deploy/toolkit-pipeline-12.jpg)
-
-
-- In the view, click on the `scan` task and review the results of the Vulnerability scan. Note that this step would have failed if any **CRITICAL** vulnerabilities had been detected
-  ![template](images/liberty-deploy/toolkit-pipeline-11.jpg)
 
 ### Review the Sonar Scan for the application
 - Use the `Cloud Native Toolkit Dashboard` to find the link to SonarQube in your environment
