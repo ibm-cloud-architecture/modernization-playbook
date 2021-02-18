@@ -30,9 +30,6 @@ This section has the following steps:
   <AnchorLink>Analyze the Recommendations</AnchorLink>
 </AnchorLinks>
 
-## Note
-If you don't have an environment to scan a [sample IBM Cloud Transformation Advisor Data Collector results file](https://github.com/ibm-cloud-architecture/appmod-liberty-tekton/blob/master/AppSrv01.zip) has been provided for you and you can still complete the steps in this exercise.
-
 ## Introduction to IBM Cloud Transformation Advisor
 IBM Cloud Transformation Advisor helps you access, analyze and modernize middleware based apps into IBM Cloud(s). It categorizes Java EE apps and MQ queue managers as simple, medium and complex based on migration complexity and provides guidance for modernization. IBM Cloud Transformation Advisor can accelerate the process to move your on-premises apps to cloud, minimize migration errors and risks, and reduce time to market in five steps.
 
@@ -44,6 +41,9 @@ You can use IBM Transformation Advisor for these activities:
 
 The tool also provides suggestions for the right-fit IBM WebSphere Application Server edition and offers advice, practices, and potential solutions to move apps to WebSphere Liberty or to newer versions of WebSphere Application Server.
 
+## Note
+If you don't have an environment to scan a [sample IBM Cloud Transformation Advisor Data Collector results file](https://github.com/ibm-cloud-architecture/appmod-liberty-tekton/blob/master/AppSrv01.zip) has been provided for you and you can still complete the steps in this exercise.
+
 ## Install IBM Cloud Transformation Advisor
 IBM Cloud Transformation Advisor is split in to two components (the `analysis engine` and the `data collector`). You can choose to between installing the `analysis engine` in to an Kubernetes Cluster or locally on a machine with Docker.
 
@@ -52,7 +52,9 @@ IBM Cloud Transformation Advisor is split in to two components (the `analysis en
 [Installing IBM Cloud Transformation Advisor locally](https://www.ibm.com/support/knowledgecenter/en/SS5Q6W/gettingStarted/deployTALocal.html)
 
 ## Scan a WebSphere Environment or use the pre-provided file
-If you have configured traditional WebSphere ND with the Customer Order Services application using the provided [instructions](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/was855) then you can proceed with the `Download the Data Collector` and `Run the Data Collector` steps below. Alternatively, you can use the provided Data Collector results file and jump to the [Upload the Data Collector results](#upload-the-data-collector-results) section
+If you have configured traditional WebSphere ND with the Customer Order Services application using the provided [instructions](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/was855) then you can proceed with the `Download the Data Collector` and `Run the Data Collector` steps below.
+
+Alternatively, you can use the provided Data Collector [results file](https://github.com/ibm-cloud-architecture/appmod-liberty-tekton/blob/master/AppSrv01.zip) and jump to the [Upload the Data Collector results](#upload-the-data-collector-results) section.
 
 ### Download the Data Collector
 Once IBM Cloud Transformation Advisor is installed, it is necessary to create a new Workspace and Collection and then download the **Data Collector** that will be used to examine the existing environment and applications.
