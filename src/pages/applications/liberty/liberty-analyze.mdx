@@ -23,11 +23,15 @@ This section has the following steps:
 <AnchorLinks small>
   <AnchorLink>Introduction to IBM Cloud Transformation Advisor</AnchorLink>
   <AnchorLink>Install IBM Cloud Transformation Advisor</AnchorLink>
+  <AnchorLink>Scan a WebSphere Environment or use the pre-provided file</AnchorLink>
   <AnchorLink>Download the Data Collector</AnchorLink>
   <AnchorLink>Run the Data Collector </AnchorLink>
   <AnchorLink>Upload the Data Collector results </AnchorLink>
   <AnchorLink>Analyze the Recommendations</AnchorLink>
 </AnchorLinks>
+
+## Note
+If you don't have an environment to scan a [sample IBM Cloud Transformation Advisor Data Collector results file](https://github.com/ibm-cloud-architecture/appmod-liberty-tekton/blob/master/AppSrv01.zip) has been provided for you and you can still complete the steps in this exercise.
 
 ## Introduction to IBM Cloud Transformation Advisor
 IBM Cloud Transformation Advisor helps you access, analyze and modernize middleware based apps into IBM Cloud(s). It categorizes Java EE apps and MQ queue managers as simple, medium and complex based on migration complexity and provides guidance for modernization. IBM Cloud Transformation Advisor can accelerate the process to move your on-premises apps to cloud, minimize migration errors and risks, and reduce time to market in five steps.
@@ -40,13 +44,15 @@ You can use IBM Transformation Advisor for these activities:
 
 The tool also provides suggestions for the right-fit IBM WebSphere Application Server edition and offers advice, practices, and potential solutions to move apps to WebSphere Liberty or to newer versions of WebSphere Application Server.
 
-
 ## Install IBM Cloud Transformation Advisor
 IBM Cloud Transformation Advisor is split in to two components (the `analysis engine` and the `data collector`). You can choose to between installing the `analysis engine` in to an Kubernetes Cluster or locally on a machine with Docker.
 
 [Installing IBM Cloud Transformation Advisor in to your Kubernetes Cluster](https://www.ibm.com/support/knowledgecenter/SS5Q6W/gettingStarted/operatorHub.html)
 
 [Installing IBM Cloud Transformation Advisor locally](https://www.ibm.com/support/knowledgecenter/en/SS5Q6W/gettingStarted/deployTALocal.html)
+
+## Scan a WebSphere Environment or use the pre-provided file
+If you have configured traditional WebSphere ND with the Customer Order Services application using the provided [instructions](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/was855) then you can proceed with the `Download the Data Collector` and `Run the Data Collector` steps below. Alternatively, you can use the provided Data Collector results file and jump to the [Upload the Data Collector results](#upload-the-data-collector-results) section
 
 ### Download the Data Collector
 Once IBM Cloud Transformation Advisor is installed, it is necessary to create a new Workspace and Collection and then download the **Data Collector** that will be used to examine the existing environment and applications.
@@ -69,7 +75,7 @@ Once IBM Cloud Transformation Advisor is installed, it is necessary to create a 
   This results in a file with a name similar to `transformationadvisor-Linux_CustomerOrderServices_WAS855_AppSrv01.tgz` being downloaded.
 
 
-## Run the Data Collector
+### Run the Data Collector
 Upload the Data Collector zip file that was downloaded from IBM Cloud Transformation Advisor in the previous step to the machine that the WebSphere ND Deployment Manager or the Standalone WebSphere Application Server is installed. The directory used arbitrary.
 
 1. Navigate to the directory you uploaded the `transformationadvisor-Linux_CustomerOrderServices_WAS855_AppSrv01.tgz` file to and issue the following commands to extract the Data Collector:
@@ -118,7 +124,7 @@ In this section the results from the Data Collector will be uploaded to IBM Clou
 
   After a few moments the upload of the data collector results will be completed.
 
-## Analyze the Recommendations
+### Analyze the Recommendations
 Once the Data Collector Results have been uploaded to IBM Cloud Transformation Advisor a set of recommendations will be created and shown on the **Recommendations** page. In this section the recommendations will be analyzed and interpreted.
 
 1. The Data Collector analyzed all of the applications running on the traditional WebSphere profile and displays a row in the chart for each application and potential target runtime.
