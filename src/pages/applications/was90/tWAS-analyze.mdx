@@ -101,11 +101,7 @@ Upload the Data Collector zip file that was downloaded from IBM Cloud Transforma
 2. It is necessary to modify the scan performed by the Data Collector to include the `org.pwte` package as the Data Collector doesn't scan `org.*` packages by default. Open the `conf/customCmd.properties` file and modify it as shown below:
 
   ```bash
-  evaluation=--evaluate --excludePackages=com.ibm,com.informix,com.microsoft,com.sybase,com.sun,java,javax,net,oracle,sqlj,_ibmjsp --includePackages=org.pwte
-  migration_liberty=--analyze --sourceAppServer=was855 --targetAppServer=liberty --targetCloud=dockerIBMCloud --includePackages=org.pwte --excludePackages=com.ibm,com.informix,com.microsoft,com.sybase,com.sun,java,javax,net,oracle,sqlj,_ibmjsp
-  migration_was=--analyze --sourceAppServer=was855 --targetAppServer=was90 --targetCloud=vmIBMCloud --includePackages=org.pwte --excludePackages=com.ibm,com.informix,com.microsoft,com.sybase,com.sun,java,javax,net,oracle,sqlj,_ibmjsp
-  #inventory=--inventory --excludeFiles=".*/directory/LargeXMLFileName.xml"
-  #featureList=--featureList --excludeFiles=".*/directory/LargeXMLFileName.xml"
+  scan_opt=--excludePackages=ch.qos,com.fasterxml,com.ibm,com.informix,com.lowagie,com.mchange,com.meterware,com.microsoft,com.sun,com.sybase,freemarker,groovy,java,javax,net,oracle,sqlj,sun,twitter4j,_ibmjsp --includePackages=org.pwte
   #java_opt=-Xmx2g
   ```
 
