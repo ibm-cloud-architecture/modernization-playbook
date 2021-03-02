@@ -14,7 +14,7 @@ There are some benefits of running Spring Boot applications on the Open Liberty 
 
 -  Consistent runtime model.  Running Liberty has many best practices especially in the Kubernetes/OpenShift world.  There are built in metrics and monitoring tools which are specifically designed to be integrated into OpenShift.  Using Liberty allows you to leverage many if these automatic connections to better maintain your environment.
 
-This repository holds a solution that is the result of a modernization for an Spring application that was upgraded to Spring Boot on Open Liberty and deployed by the IBM CloudPak for Applications to RedHat OpenShift.
+This repository holds a solution that is the result of a modernization for an Spring application that was upgraded to Spring Boot on Open Liberty and deployed to RedHat OpenShift.
 
 ## Application Overview
 Pet Clinic is a demonstration application that was created in 2003 to show the features and functions of the Spring Framework. A description of the original application can be found in the **The Pet Clinic Application** section of the [readme](https://projects.spring.io/spring-petclinic/#quick-start)
@@ -133,7 +133,7 @@ oc apply -f ssc.yaml
 
 ### Create the projects
 Four Red Hat OpenShift projects are required in this scenario:
-- Build: this project will contain the Jenkins server and the artifacts used to build the application image  
+- Build: this project will contain the Jenkins server and the artifacts used to build the application image
 - Dev: this is the `development` environment for this application
 - Stage: this is the `staging` environment for this application
 - Prod: this is the `production` environment for this application
@@ -244,7 +244,7 @@ Issue the following commands to create the application from the template:
 oc new-app gse-springboot-build -p APPLICATION_NAME=petclinic-liberty -p SOURCE_URL="https://github.com/ibm-cloud-architecture/cloudpak-for-applications" -n petclinic-liberty-build
 ```
 
-### Run the pipeline  
+### Run the pipeline
 The newly created pipeline can be started from the Red Hat OpenShift console which allows access to the Jenkins logs but also tracks the progress in the OCP console.
 
 1. Navigate to **Application Console --> Pet Clinic on Liberty - Build --> Builds --> Pipelines** and click the **Start Pipeline** button
@@ -297,4 +297,4 @@ Now that the pipeline is complete, validate the Pet Clinic application is deploy
 5. Repeat the validations for the `stage` and `prod` Projects.
 
 ## Summary
-This application has been modified from the initial Spring Framework version to Spring Boot v2 to run on Open Liberty and deployed by the IBM CloudPak for Applications.
+This application has been modified from the initial Spring Framework version to Spring Boot v2 to run on Open Liberty and deployed to Red Hat OpenShift.

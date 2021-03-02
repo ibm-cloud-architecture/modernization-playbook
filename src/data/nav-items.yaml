@@ -7,7 +7,7 @@
       path: /applications/
     - title: Getting Started with IBM Mono2Micro
       path: /applications/m2m
-    
+
 - title: Runtime Modernization
   pages:
     - title: Introduction
@@ -24,12 +24,6 @@
       path: /applications/liberty/db2
     - title: Managing session state
       path: /applications/liberty/liberty-sessions
-- title: Spring Modernization
-  pages:
-    - title: Introduction
-      path: /applications/spring/README
-    - title: Build
-      path: /applications/spring/spring-build
 - title: Operational Modernization
   pages:
     - title: Introduction
@@ -40,6 +34,16 @@
       path: /applications/was90/tWAS-build
     - title: Deploy
       path: /applications/was90/tWAS-deploy
+- title: Refactoring Java EE Applications
+  pages:
+    - title: Introduction
+      path: /applications/refactor
+- title: Spring Modernization
+  pages:
+    - title: Introduction
+      path: /applications/spring/README
+    - title: Build
+      path: /applications/spring/spring-build
 - title: Integration Modernization
   pages:
     - title: Introduction

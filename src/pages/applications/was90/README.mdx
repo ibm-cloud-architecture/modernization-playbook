@@ -11,7 +11,7 @@ Modernizing operations<br/> <h2>Moving workloads as-is to a container platform</
 
 <PageDescription>
 
-Repackaging workloads as-is to a container without requiring development teams to make application changes.  
+Repackaging workloads as-is to a container without requiring development teams to make application changes.
 Explore how to move a WebSphere application to run on Red Hat OpenShift Container Platform with a traditional WAS container.
 
 </PageDescription>
@@ -26,7 +26,7 @@ Explore how to move a WebSphere application to run on Red Hat OpenShift Containe
 </AnchorLinks>
 
 ## Introduction
-**[Operational modernization](https://www.ibm.com/cloud/architecture/architectures/op-modernization-solution)** gives an operations team the opportunity to embrace modern operations best practices without putting change requirements on the development team. 
+**[Operational modernization](https://www.ibm.com/cloud/architecture/architectures/op-modernization-solution)** gives an operations team the opportunity to embrace modern operations best practices without putting change requirements on the development team.
 Modernizing from WebSphere Network Deployment (ND) to the **traditional WebSphere Application Server Base V9 runtime** in a container allows the application to be moved to the cloud without code changes.
 
 The scaling, routing, clustering, high availability and continuous availability functionality that WebSphere ND was required for previously can be provided by the container runtime and allows the operations team to run cloud-native and older applications in the same environment with the same standardized logging, monitoring and security frameworks.
@@ -41,7 +41,7 @@ The diagram below shows the high level decision flow where IBM Cloud Transformat
 
 ![Liberty flow](images/tWASflow.jpg)
 
-This repository holds a solution that is the result of a **operational modernization** for an existing WebSphere Java EE application that was moved from WebSphere ND v8.5.5 to the traditional WebSphere Base v9 container and is deployed by the IBM CloudPak for Applications to Red Hat OpenShift.
+This repository holds a solution that is the result of a **operational modernization** for an existing WebSphere Java EE application that was moved from WebSphere ND v8.5.5 to the traditional WebSphere Base v9 container and is deployed to Red Hat OpenShift.
 
 ## Application Overview
 The **Customer Order Services** application is a simple store-front shopping application, built during the early days of the Web 2.0 movement. Users interact directly with a browser-based interface and manage their cart to submit orders.  This application is built using the traditional [3-Tier Architecture](http://www.tonymarston.net/php-mysql/3-tier-architecture.html) model, with an HTTP server, an application server, and a supporting database.
@@ -106,4 +106,4 @@ The steps were:
 Detailed, step-by-step instructions on how to replicate these steps are provided [here](tWAS-deploy.md)
 
 ## Summary
-This application has been modified from the initial [WebSphere ND v8.5.5 version](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/was855) to run on traditional WebSphere and deployed by the IBM CloudPak for Applications.
+This application has been modified from the initial [WebSphere ND v8.5.5 version](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/was855) to run on traditional WebSphere and deployed to Red Hat OpenShift
