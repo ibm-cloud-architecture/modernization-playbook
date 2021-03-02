@@ -34,7 +34,7 @@
       path: /applications/was90/tWAS-build
     - title: Deploy
       path: /applications/was90/tWAS-deploy
-- title: Refactoring Java EE Applications
+- title: Refactoring Java EE Apps
   pages:
     - title: Introduction
       path: /applications/refactor
