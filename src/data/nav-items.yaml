@@ -38,6 +38,8 @@
   pages:
     - title: Introduction
       path: /applications/refactor
+    - title: Run solution locally
+      path: /applications/refactor/run-local
 - title: Spring Modernization
   pages:
     - title: Introduction
