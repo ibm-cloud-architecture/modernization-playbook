@@ -1,0 +1,32 @@
+---
+title: Refactoring Java EE Applications
+description: A example of refactoring a Java EE Application to Micro Services
+---
+
+export const Title = () => (
+  <span>
+Refactoring Java EE Applications<br/> <h2>Using the strangler pattern</h2>
+  </span>
+);
+
+<PageDescription>
+
+Using the strangler pattern
+
+</PageDescription>
+
+<AnchorLinks small>
+  <AnchorLink>Introduction</AnchorLink>
+  <AnchorLink>Refactor the Catalog service to Quarkus</AnchorLink>
+  <AnchorLink>Summary</AnchorLink>
+</AnchorLinks>
+
+
+## Introduction
+In this phase the backend application was analyzed and the Catalog service was identified as a candidate to be extracted in to it's own Micro Service. The code was strangled from the monolith and deployed using Quarkus
+### Refactor the Catalog service to Quarkus
+
+  ![Step 6](images/step6.png)
+
+## Summary
+This application has been refactored in a series of steps from the original [WebSphere ND v8.5.5 version](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/was855) to run as Micro Services on Red Hat OpenShift.

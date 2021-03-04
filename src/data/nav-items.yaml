@@ -38,6 +38,12 @@
   pages:
     - title: Introduction
       path: /applications/refactor
+    - title: Separate Frontend
+      path: /applications/refactor/frontend
+    - title: Update Backend
+      path: /applications/refactor/backend
+    - title: Strangle Catalog Service
+      path: /applications/refactor/catalog
     - title: Run solution locally
       path: /applications/refactor/run-local
 - title: Spring Modernization

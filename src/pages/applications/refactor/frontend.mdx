@@ -1,0 +1,35 @@
+---
+title: Refactoring Java EE Applications
+description: A example of refactoring a Java EE Application to Micro Services
+---
+
+export const Title = () => (
+  <span>
+Refactoring Java EE Applications<br/> <h2>Extracting the frontend code</h2>
+  </span>
+);
+
+<PageDescription>
+
+Extracting the frontend code
+
+</PageDescription>
+
+<AnchorLinks small>
+  <AnchorLink>Introduction</AnchorLink>
+  <AnchorLink>Separate the frontend from the monolith</AnchorLink>
+  <AnchorLink>Summary</AnchorLink>
+</AnchorLinks>
+
+
+## Introduction
+Once the monolith is containerized the application owners may choose to separate the frontend application code (DOJO based) from the monolith's EAR file in to a separately deployable component. With the front and backend separated they can be developed, tested and deployed independently.
+
+### Separate the frontend from the monolith
+
+  ![Step 4](images/step4.png)
+
+
+
+## Summary
+This application has been refactored in a series of steps from the original [WebSphere ND v8.5.5 version](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/was855) to run as Micro Services on Red Hat OpenShift.

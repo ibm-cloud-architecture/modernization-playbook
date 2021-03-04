@@ -1,0 +1,33 @@
+---
+title: Refactoring Java EE Applications
+description: A example of refactoring a Java EE Application to Micro Services
+---
+
+export const Title = () => (
+  <span>
+Refactoring Java EE Applications<br/> <h2>A phased approach to refactoring a Monolith in to Micro Services</h2>
+  </span>
+);
+
+<PageDescription>
+
+Modernizing the backend JEE code
+
+</PageDescription>
+
+<AnchorLinks small>
+  <AnchorLink>Introduction</AnchorLink>
+  <AnchorLink>Move the backend monolith to OpenLiberty</AnchorLink>
+  <AnchorLink>Summary</AnchorLink>
+</AnchorLinks>
+
+
+## Introduction
+In this phase the JEE6 EJB code is modernized to use MicroProfile and is then able to run on the latest open source version of Liberty (OpenLiberty)
+
+### Move the backend monolith to OpenLiberty
+
+  ![Step 5](images/step5.png)
+
+## Summary
+This application has been refactored in a series of steps from the original [WebSphere ND v8.5.5 version](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/was855) to run as Micro Services on Red Hat OpenShift.
