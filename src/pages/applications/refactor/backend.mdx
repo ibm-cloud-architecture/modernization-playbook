@@ -18,6 +18,7 @@ Modernizing the backend JEE code
 <AnchorLinks small>
   <AnchorLink>Introduction</AnchorLink>
   <AnchorLink>Move the backend monolith to OpenLiberty</AnchorLink>
+  <AnchorLink>Run this solution</AnchorLink>
   <AnchorLink>Summary</AnchorLink>
 </AnchorLinks>
 
@@ -28,6 +29,16 @@ In this phase the JEE6 EJB code is modernized to use MicroProfile and is then ab
 ### Move the backend monolith to OpenLiberty
 
   ![Step 5](images/step5.png)
+
+### Run this solution
+Use the following steps to run this solution locally on Docker
+
+```
+$ git clone https://github.com/IBM/application-modernization-javaee-quarkus.git && cd application-modernization-javaee-quarkus
+$ ROOT_FOLDER=$(pwd)
+$ sh ${ROOT_FOLDER}/scripts-docker/build-and-run-monolith-db2.sh
+$ sh ${ROOT_FOLDER}/scripts-docker/build-and-run-splitted-frontend-open.sh
+```
 
 ## Summary
 This application has been refactored in a series of steps from the original [WebSphere ND v8.5.5 version](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/was855) to run as Micro Services on Red Hat OpenShift.
