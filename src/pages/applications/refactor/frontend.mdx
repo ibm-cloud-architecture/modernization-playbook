@@ -25,11 +25,15 @@ Extracting the frontend code
 ## Introduction
 Once the monolith is containerized the application owners may choose to separate the frontend application code (DOJO based) from the monolith's EAR file in to a separately deployable component. With the front and backend separated they can be developed, tested and deployed independently.
 
+![Step 4](images/step4.png)
+
 ### Separate the frontend from the monolith
 
-  ![Step 4](images/step4.png)
+The CustomerOrderServices application frontend was developed using the [DOJO Toolkit](https://dojotoolkit.org/) which is similar to jQuery and communicates with the backend using HTTP based REST APIs which use JSON for data. While these APIs are not resource focused (instead they are RPC style), they do still allow an easy seperation of the frontend and backend with the *backend for frontend* (BFF) pattern. Had the frontend used older server-side technologies such as JSP or JSF then a rewrite of the frontend would probably have been required.
 
+![Step 4](images/frontend.png)
 
+Given that the frontend is now static client-side HTML content that doesn't require an application server to *serve* it, it could be deployed using a simple web server such as NGINX. In this example it is deployed using WebSphere Liberty for simplicity as it was going to be rewritten to use newer technologies later in the modernization journey.
 
 ## Summary
-This application has been refactored in a series of steps from the original [WebSphere ND v8.5.5 version](https://github.com/ibm-cloud-architecture/cloudpak-for-applications/tree/was855) to run as Micro Services on Red Hat OpenShift.
+This frontend of the application has been extracted from the EAR file and is deployed to its own container. This gives more flexibility to develop and deploy the parts of the application independently of each other.
