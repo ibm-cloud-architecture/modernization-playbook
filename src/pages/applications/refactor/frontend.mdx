@@ -18,6 +18,7 @@ Extracting the frontend code
 <AnchorLinks small>
   <AnchorLink>Introduction</AnchorLink>
   <AnchorLink>Separate the frontend from the monolith</AnchorLink>
+  <AnchorLink>Run this solution</AnchorLink>
   <AnchorLink>Summary</AnchorLink>
 </AnchorLinks>
 
@@ -34,6 +35,18 @@ The CustomerOrderServices application frontend was developed using the [DOJO Too
 ![Step 4](images/frontend.png)
 
 Given that the frontend is now static client-side HTML content that doesn't require an application server to *serve* it, it could be deployed using a simple web server such as NGINX. In this example it is deployed using WebSphere Liberty for simplicity as it was going to be rewritten to use newer technologies later in the modernization journey.
+
+### Run this solution
+Use the following steps to run this solution locally on Docker
+
+```
+$ git clone https://github.com/IBM/application-modernization-javaee-quarkus.git && cd application-modernization-javaee-quarkus
+$ ROOT_FOLDER=$(pwd)
+$ sh ${ROOT_FOLDER}/scripts-docker/build-and-run-monolith-db2.sh
+$ sh ${ROOT_FOLDER}/scripts-docker/build-and-run-splitted-frontend.sh
+```
+
+- Open [http://localhost/CustomerOrderServicesWeb](http://localhost/CustomerOrderServicesWeb) in order to test the application and see the frontend
 
 ## Summary
 This frontend of the application has been extracted from the EAR file and is deployed to its own container. This gives more flexibility to develop and deploy the parts of the application independently of each other.
