@@ -58,21 +58,21 @@ Once the monolith is containerized the application owners may choose to separate
 
   ![Step 4](images/step4.png)
 
-A more detailed description of the steps that were taken in this phase can be found [here](refactor/frontend)
+A more detailed description of the steps that were taken in this phase can be found [here](https://ibm-cloud-architecture.github.io/modernization-playbook/applications/refactor/frontend)
 
 ### Move the backend monolith to OpenLiberty
 In this phase the JEE6 EJB code is modernized to use MicroProfile and is then able to run on the latest open source version of Liberty (OpenLiberty)
 
   ![Step 5](images/step5.png)
 
-A more detailed description of the steps that were taken in this phase can be found [here](refactor/backend)
+A more detailed description of the steps that were taken in this phase can be found [here](https://ibm-cloud-architecture.github.io/modernization-playbook/applications/refactor/backend)
 
 ### Refactor the Catalog service to Quarkus
 In this phase the backend application was analyzed and the Catalog service was identified as a candidate to be extracted in to it's own Micro Service. The code was strangled from the monolith and deployed using Quarkus
 
   ![Step 6](images/step6.png)
 
-A more detailed description of the steps that were taken in this phase can be found [here](refactor/catalog)
+A more detailed description of the steps that were taken in this phase can be found [here](https://ibm-cloud-architecture.github.io/modernization-playbook/applications/refactor/catalog)
 
 ### Building Micro-frontends and further modernization
 The next logical step in the modernization journey is to address the legacy circa-2010 web front end and replace it with [micro frontends](http://heidloff.net/article/using-micro-frontends-microservices/). You may be interested in articles that describe how to create [Micro frontends with SPA](http://heidloff.net/article/developing-micro-frontends-single-spa/) and [loosely coupled micro frontends with RxJS](http://heidloff.net/article/developing-loosely-coupled-micro-frontends-rxjs/)
